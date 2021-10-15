@@ -11,7 +11,11 @@ npm i
 npm run dev
 ```
 
-建议使用 VSCode 开发，使用 ESlint、Prettier 插件用于格式化代码，使用 Volar 插件用于提升 Vue3 代码开发体验（如果你正在使用 Vetur，请暂时禁用以防冲突）。项目目录中已配置 .eslintrc.js，.prettierrc.js。
+建议配置：
+
+- 使用 VSCode 开发
+- 使用 ESlint、Prettier 插件用于格式化代码（项目目录中已配置 .eslintrc.js，.prettierrc.js）
+- 使用 Volar 插件用于提升 Vue3 代码开发体验（如果你正在使用 Vetur，请暂时禁用以防冲突）
 
 # Git SOP
 
