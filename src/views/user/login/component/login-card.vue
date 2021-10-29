@@ -41,13 +41,16 @@ const rules = {
 const loginFormRef = ref<any>(null);
 const message = useMessage();
 
-const login = (e: any) => {
+const login = async (e: any) => {
   e.preventDefault();
-  loginFormRef.value.validate((errors: any) => {
+  await loginFormRef.value.validate(async (errors: any) => {
     if (!errors) {
-      loginReq({identification: loginForm.value.username, password: loginForm.value.password}).then(res => {
-        message.success('登录成功');
-      })
+      const { data } = await loginReq({identification: loginForm.value.username, password: loginForm.value.password});
+      if(data.code === '200'){
+        message.success('登陆成功')
+      } else {
+        message.error(`登陆失败：${data.message}`);
+      }
     } else {
       message.error('验证失败');
     }
