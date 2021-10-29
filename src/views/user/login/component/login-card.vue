@@ -18,6 +18,7 @@ import {
   NIcon,
 } from 'naive-ui';
 import { useMessage } from 'naive-ui';
+import { loginReq } from '../../../../api/user';
 
 const loginForm = ref({
   username: '',
@@ -44,7 +45,9 @@ const login = (e: any) => {
   e.preventDefault();
   loginFormRef.value.validate((errors: any) => {
     if (!errors) {
-      message.success('登录成功');
+      loginReq({identification: loginForm.value.username, password: loginForm.value.password}).then(res => {
+        message.success('登录成功');
+      })
     } else {
       message.error('验证失败');
     }
