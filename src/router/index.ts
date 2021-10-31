@@ -12,6 +12,11 @@ const routes = [
         name: "Register",
         component:  () => import('../views/user/register/index.vue'),
     },
+    {
+        path: "/user_info",
+        name: "UserInfo",
+        component:  () => import('@/views/user/info/index.vue'),
+    },
 ];
 
 // 导出路由

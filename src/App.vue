@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { NMessageProvider } from 'naive-ui';
+import NavigationBar from './components/common/navigation-bar.vue';
 </script>
 
 <template>
   <n-message-provider>
+    <navigation-bar />
     <router-view />
   </n-message-provider>
 </template>
