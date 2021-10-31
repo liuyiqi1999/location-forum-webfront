@@ -8,7 +8,7 @@ interface ResponseInterface {
 }
 
 interface LoginReqArguInterface {
-  identification: string;
+  username: string;
   password: number | string;
 }
 export const loginReq = (data: LoginReqArguInterface): AxiosPromise<ResponseInterface> => {

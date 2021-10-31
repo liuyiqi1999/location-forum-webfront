@@ -1,9 +1,3 @@
-<script lang="ts">
-export default {
-    name: 'RegisterCard'
-}
-</script>
-
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
@@ -18,7 +12,6 @@ import {
 } from 'naive-ui';
 import { useMessage } from 'naive-ui';
 import { LogIn as LoginIcon } from '@vicons/ionicons5';
-import axios from '../../../../axios';
 
 const registerForm = ref({
     username: '',

@@ -15,5 +15,5 @@
             "@/*": ["src/*"]
         }
   },
-  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/utils/axios.ts"]
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "src/utils/axios.ts", "src/store/index.ts"]
 }

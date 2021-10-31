@@ -33,7 +33,7 @@ class HttpRequest {
         }
         if (localStorage.getItem('token')) {
           const token = localStorage.getItem('token');
-          config.headers!.Authorization = `Bearer ${token}`!;
+          config.headers!.Authorization = `${token}`!;
         }
         return config;
       },
@@ -45,9 +45,9 @@ class HttpRequest {
       (res: AxiosResponse) => {
         const { data } = res; // res的类型是AxiosResponse<any>，包含六个字段，其中data是服务端返回的数据
         const { code, msg } = data as any; // 通常服务端会将响应状态码、提示信息、数据等放到返回的数据中
-        if (code !== 0) {
-          // 这里我们在服务端将正确返回的状态码标为0
-          console.error(msg); // 如果不是0，则打印错误信息，我们后面讲到UI组件的时候，这里可以使用消息窗提示
+        if (code !== '200') {
+          // 这里我们在服务端将正确返回的状态码标为200
+          console.error(msg); // 如果不是200，则打印错误信息，我们后面讲到UI组件的时候，这里可以使用消息窗提示
         }
         return res; // 返回数据
       },
