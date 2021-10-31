@@ -1,9 +1,3 @@
-<script lang="ts">
-export default {
-    name: 'LoginCard'
-}
-</script>
-
 <script setup lang="ts">
 import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
