@@ -5,9 +5,11 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, reactive } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex'
 const router = useRouter();
+const store = useStore();
 import { PersonAddSharp as RegisterIcon } from '@vicons/ionicons5';
 import {
   NCard,
@@ -20,7 +22,7 @@ import {
 import { useMessage } from 'naive-ui';
 import { loginReq } from '../../../../api/user';
 
-const loginForm = ref({
+const loginForm = reactive({
   username: '',
   password: '',
 });
@@ -45,9 +47,14 @@ const login = async (e: any) => {
   e.preventDefault();
   await loginFormRef.value.validate(async (errors: any) => {
     if (!errors) {
-      const { data } = await loginReq({identification: loginForm.value.username, password: loginForm.value.password});
+      const { data } = await loginReq({username: loginForm.username, password: loginForm.password});
       if(data.code === '200'){
         message.success('登陆成功')
+        store.commit('updateUser', {
+          username: loginForm.username,
+          id: data.data.id
+        });
+        localStorage.setItem('token', `${data.data.tokenHead} ${data.data.token}`);
       } else {
         message.error(`登陆失败：${data.message}`);
       }

@@ -18,7 +18,6 @@ import {
 } from 'naive-ui';
 import { useMessage } from 'naive-ui';
 import { LogIn as LoginIcon } from '@vicons/ionicons5';
-import axios from '../../../../axios';
 
 const registerForm = ref({
     username: '',
