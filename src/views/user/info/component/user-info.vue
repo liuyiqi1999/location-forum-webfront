@@ -79,13 +79,8 @@
   </div>
 </template>
 
-<script lang="ts">
-export default {
-  name: 'UserInfo',
-};
-</script>
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import {
   NAvatar,
   NButton,
@@ -107,15 +102,15 @@ import {
   LogoOctocat as UserIcon,
   ColorWandOutline as EditIcon,
 } from '@vicons/ionicons5';
-const user = ref({
+const user = reactive({
   username: 'user001',
   pw: 'xxx',
   mail: '123@qq.com',
   signature: '',
 });
 const showModal = ref<boolean>(false);
-const newMail = ref(user.value.mail);
-const newSignature = ref(user.value.signature);
+const newMail = ref(user.mail);
+const newSignature = ref(user.signature);
 
 const updateUserInfo = () => {
   // todo:更新用户信息

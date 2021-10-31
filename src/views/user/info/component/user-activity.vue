@@ -6,11 +6,6 @@
     </n-tabs>
   </div>
 </template>
-<script lang="ts">
-export default {
-  name: 'UserActivity',
-};
-</script>
 <script lang="ts" setup>
 import { NTabs, NTabPane } from 'naive-ui';
 </script>

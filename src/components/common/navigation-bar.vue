@@ -18,7 +18,7 @@
           <n-space :size="24" align="center">
             <n-badge :value="messageNum" :max="15">
               <n-icon size="30" color="#A6A6A6">
-                <mail-icon></mail-icon>
+                <message-icon></message-icon>
               </n-icon>
             </n-badge>
           </n-space>
@@ -59,7 +59,7 @@ import {
 } from 'naive-ui';
 import { RouterLink } from 'vue-router';
 import {
-  NotificationsOutline as MailIcon,
+  NotificationsOutline as MessageIcon,
   PersonCircleOutline as UserIcon,
   Pencil as EditIcon,
   LogOutOutline as LogoutIcon,
@@ -74,22 +74,23 @@ const renderIcon = (icon: any, color: string) => {
     });
   };
 };
-
+// 导航栏的颜色
+const barColor = ref('#18A058');
 const userOptions = [
   {
     label: '个人主页',
     key: 'userInfo',
-    icon: renderIcon(UserIcon, '#18A058'),
+    icon: renderIcon(UserIcon, barColor.value),
   },
   {
     label: '修改密码',
     key: 'updatePassword',
-    icon: renderIcon(EditIcon, '#18A058'),
+    icon: renderIcon(EditIcon, barColor.value),
   },
   {
     label: '退出登录',
     key: 'logout',
-    icon: renderIcon(LogoutIcon, '#18A058'),
+    icon: renderIcon(LogoutIcon, barColor.value),
   },
 ];
 const handleSelect = (key: any) => {
@@ -98,11 +99,13 @@ const handleSelect = (key: any) => {
 </script>
 
 <style lang="scss" scoped>
+// 导航栏的主题色
+$barColor: v-bind(barColor);
 .forum {
   padding-left: 20px;
   margin-top: -10px;
   font-size: 35px;
-  color: #18a058;
+  color: $barColor;
   font-weight: bolder;
 }
 </style>
