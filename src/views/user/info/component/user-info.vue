@@ -72,7 +72,7 @@
       </div>
       <template #action>
         <div>
-          <n-button> 确认 </n-button>
+          <n-button @click="updateUserInfo"> 确认 </n-button>
         </div>
       </template>
     </n-modal>
@@ -80,7 +80,7 @@
 </template>
 
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref } from 'vue';
 import {
   NAvatar,
   NButton,
@@ -95,6 +95,7 @@ import {
   NInputGroup,
   NModal,
   NInputGroupLabel,
+  useMessage,
 } from 'naive-ui';
 import {
   MailOpenOutline as MailIcon,
@@ -102,18 +103,47 @@ import {
   LogoOctocat as UserIcon,
   ColorWandOutline as EditIcon,
 } from '@vicons/ionicons5';
+import { useStore } from 'vuex';
+import { UserApi } from '@/api';
+const message = useMessage();
 const user = reactive({
   username: 'user001',
   pw: 'xxx',
-  mail: '123@qq.com',
+  mail: '12306@qq.com',
   signature: '',
+  id: -1,
+});
+const store = useStore();
+const initUser = async () => {
+  const id = String(store.getters.getUserId);
+  const { data } = await UserApi.getUserInfo(id);
+  return data.data;
+};
+
+const newMail = ref();
+const newSignature = ref();
+onMounted(async () => {
+  // 更新用户信息
+  const originUser = await initUser();
+  user.mail = originUser.mail;
+  user.signature = originUser.signature;
+  user.username = originUser.username;
+  user.id = originUser.id;
+  newMail.value = user.mail;
+  newSignature.value = user.signature;
 });
 const showModal = ref<boolean>(false);
-const newMail = ref(user.mail);
-const newSignature = ref(user.signature);
 
-const updateUserInfo = () => {
-  // todo:更新用户信息
+const updateUserInfo = async () => {
+  const res = await UserApi.updateUserInfo(
+    user.id,
+    newMail.value,
+    newSignature.value
+  );
+  const data = res.data.data;
+  user.mail = data.mail;
+  user.signature = data.signature;
+  message.success('更新成功');
   showModal.value = false;
 };
 </script>

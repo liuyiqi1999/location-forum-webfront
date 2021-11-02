@@ -4,7 +4,7 @@
       <n-gi span="16">
         <div class="forum">同城论坛</div>
       </n-gi>
-      <n-gi span="2">
+      <n-gi span="2" v-if="isLogin">
         <div>
           <n-space :size="24" align="center">
             <n-icon size="30" color="#A6A6A6">
@@ -13,7 +13,7 @@
           </n-space>
         </div>
       </n-gi>
-      <n-gi span="2">
+      <n-gi span="2" v-if="isLogin">
         <div>
           <n-space :size="24" align="center">
             <n-badge :value="messageNum" :max="15">
@@ -24,7 +24,7 @@
           </n-space>
         </div>
       </n-gi>
-      <n-gi span="2">
+      <n-gi span="2" v-if="isLogin">
         <div>
           <n-space style="margin-top: -12px">
             <n-dropdown
@@ -41,12 +41,31 @@
           </n-space>
         </div>
       </n-gi>
+      <n-gi span="2" v-if="!isLogin">
+        <div>
+          <n-button type="success" ghost @click="goLogin">登录</n-button>
+        </div>
+      </n-gi>
     </n-grid>
+    <!-- 更新密码 -->
+    <n-modal v-model:show="showUpdateModal" preset="dialog" title="更新密码">
+      <div>
+        <n-input-group style="margin: 10px 0px">
+          <n-input-group-label style="width: 20%"> 密码： </n-input-group-label>
+          <n-input v-model:value="newPassword" />
+        </n-input-group>
+      </div>
+      <template #action>
+        <div>
+          <n-button @click="updateUserPassword"> 确认 </n-button>
+        </div>
+      </template>
+    </n-modal>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, h, ref } from 'vue';
+import { defineComponent, h, ref, watch } from 'vue';
 import {
   NIcon,
   NButton,
@@ -56,8 +75,13 @@ import {
   NAvatar,
   NGi,
   NDropdown,
+  NModal,
+  NInput,
+  NInputGroup,
+  NInputGroupLabel,
+  useMessage,
 } from 'naive-ui';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRouter } from 'vue-router';
 import {
   NotificationsOutline as MessageIcon,
   PersonCircleOutline as UserIcon,
@@ -65,6 +89,9 @@ import {
   LogOutOutline as LogoutIcon,
   SearchSharp as SearchIcon,
 } from '@vicons/ionicons5';
+import { useStore } from 'vuex';
+import { UserApi } from '@/api';
+
 // 新消息的数量
 const messageNum = ref(4);
 const renderIcon = (icon: any, color: string) => {
@@ -93,8 +120,59 @@ const userOptions = [
     icon: renderIcon(LogoutIcon, barColor.value),
   },
 ];
+
+const store = useStore();
+const isLogin = ref(store.getters.getUsername != '');
+// 监听store数据，判断用户是否登录
+watch(
+  () => store.getters.getUsername,
+  (val, old) => {
+    isLogin.value = val != '';
+    showLoginModal.value = false;
+  }
+);
+
+const showLoginModal = ref(false);
+const showUpdateModal = ref(false);
+const newPassword = ref('');
+
 const handleSelect = (key: any) => {
+  if (key == 'logout') {
+    store.commit('clear');
+    goLogin();
+  } else if (key == 'userInfo') {
+    if (store.getters.getUserRole == 0) {
+      router.push({
+        name: 'UserInfo',
+      });
+    } else {
+      // todo：后面更新到管理员界面
+      router.push({
+        name: 'UserInfo',
+      });
+    }
+  } else {
+    // 修改密码,展示修改界面
+    showUpdateModal.value = true;
+  }
   console.log(key);
+};
+const message = useMessage();
+const updateUserPassword = async () => {
+  await UserApi.updateUserInfo(
+    store.getters.getUserId,
+    '',
+    '',
+    newPassword.value
+  );
+  message.success('更新密码成功');
+  showUpdateModal.value = false;
+};
+const router = useRouter();
+const goLogin = () => {
+  router.push({
+    name: 'Login',
+  });
 };
 </script>
 
