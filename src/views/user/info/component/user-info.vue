@@ -1,81 +1,89 @@
 <template>
   <div>
-    <!-- 用户信息 -->
-    <!-- <div class="user-background"> -->
-    <div class="user-background">
-      <h1
-        style="
-          color: rgb(161, 157, 157);
-          padding-left: 25px;
-          margin-bottom: -10px;
-        "
-      >
-        个人主页
-      </h1>
-      <div style="display: inline-block">
-        <n-avatar
-          circle
-          :size="170"
-          src="https://gitee.com/zqh1024/typora_img/raw/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20211030182351.jpg"
-        />
-      </div>
-      <div class="user-info">
-        <div class="info-item">
-          <!-- color="#6A5ACD" -->
-          <n-icon size="30" class="user-info-icon">
-            <user-icon></user-icon>
-          </n-icon>
-          <span class="user-info-text"> 用户名： {{ user.username }} </span>
+    <n-spin :show="showLoading">
+      <!-- 用户信息 -->
+      <!-- <div class="user-background"> -->
+      <div class="user-background">
+        <h1
+          style="
+            color: rgb(161, 157, 157);
+            padding-left: 25px;
+            margin-bottom: -10px;
+          "
+        >
+          个人主页
+        </h1>
+        <div style="display: inline-block">
+          <n-avatar
+            circle
+            :size="170"
+            src="https://gitee.com/zqh1024/typora_img/raw/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20211030182351.jpg"
+          />
         </div>
-        <div class="info-item">
-          <!-- color="#2E8B57" -->
-          <n-icon size="30" class="user-info-icon">
-            <mail-icon></mail-icon>
-          </n-icon>
-          <span class="user-info-text"> 邮箱：{{ user.mail }} </span>
-        </div>
-        <div class="info-item">
-          <!-- color="#8B4513" -->
-          <n-icon size="30" class="user-info-icon">
-            <signature-icon />
-          </n-icon>
-          <span class="user-info-text">
-            签名：{{ user.signature ? user.signature : '该用户很懒，啥都没写' }}
-          </span>
+        <div class="user-info">
+          <div class="info-item">
+            <!-- color="#6A5ACD" -->
+            <n-icon size="30" class="user-info-icon">
+              <user-icon></user-icon>
+            </n-icon>
+            <span class="user-info-text"> 用户名： {{ user.username }} </span>
+          </div>
+          <div class="info-item">
+            <!-- color="#2E8B57" -->
+            <n-icon size="30" class="user-info-icon">
+              <mail-icon></mail-icon>
+            </n-icon>
+            <span class="user-info-text"> 邮箱：{{ user.mail }} </span>
+          </div>
+          <div class="info-item">
+            <!-- color="#8B4513" -->
+            <n-icon size="30" class="user-info-icon">
+              <signature-icon />
+            </n-icon>
+            <span class="user-info-text">
+              签名：{{
+                user.signature ? user.signature : '该用户很懒，啥都没写'
+              }}
+            </span>
 
-          <n-space style="float: right">
-            <n-button type="primary" @click="showModal = true">
-              <template #icon>
-                <n-icon>
-                  <edit-icon />
-                </n-icon>
-              </template>
-              编辑个人资料</n-button
-            >
-          </n-space>
+            <n-space style="float: right">
+              <n-button type="primary" @click="showModal = true">
+                <template #icon>
+                  <n-icon>
+                    <edit-icon />
+                  </n-icon>
+                </template>
+                编辑个人资料</n-button
+              >
+            </n-space>
+          </div>
+          <div></div>
         </div>
-        <div></div>
       </div>
-    </div>
 
-    <!-- 更新个人资料的模态框 -->
-    <n-modal v-model:show="showModal" preset="dialog" title="更新个人资料">
-      <div>
-        <n-input-group style="margin: 10px 0px">
-          <n-input-group-label style="width: 20%"> 邮箱: </n-input-group-label>
-          <n-input v-model:value="newMail" />
-        </n-input-group>
-        <n-input-group>
-          <n-input-group-label style="width: 20%"> 签名: </n-input-group-label>
-          <n-input v-model:value="newSignature" />
-        </n-input-group>
-      </div>
-      <template #action>
+      <!-- 更新个人资料的模态框 -->
+      <n-modal v-model:show="showModal" preset="dialog" title="更新个人资料">
         <div>
-          <n-button @click="updateUserInfo"> 确认 </n-button>
+          <n-input-group style="margin: 10px 0px">
+            <n-input-group-label style="width: 20%">
+              邮箱:
+            </n-input-group-label>
+            <n-input v-model:value="newMail" />
+          </n-input-group>
+          <n-input-group>
+            <n-input-group-label style="width: 20%">
+              签名:
+            </n-input-group-label>
+            <n-input v-model:value="newSignature" />
+          </n-input-group>
         </div>
-      </template>
-    </n-modal>
+        <template #action>
+          <div>
+            <n-button @click="updateUserInfo"> 确认 </n-button>
+          </div>
+        </template>
+      </n-modal>
+    </n-spin>
   </div>
 </template>
 
@@ -95,6 +103,7 @@ import {
   NInputGroup,
   NModal,
   NInputGroupLabel,
+  NSpin,
   useMessage,
 } from 'naive-ui';
 import {
@@ -107,11 +116,11 @@ import { useStore } from 'vuex';
 import { UserApi } from '@/api';
 const message = useMessage();
 const user = reactive({
-  username: 'user001',
-  pw: 'xxx',
-  mail: '12306@qq.com',
+  username: '',
+  pw: '',
+  mail: '',
   signature: '',
-  id: -1,
+  id: 0,
 });
 const store = useStore();
 const initUser = async () => {
@@ -122,8 +131,11 @@ const initUser = async () => {
 
 const newMail = ref();
 const newSignature = ref();
+// 显示加载进度
+const showLoading = ref(false);
 onMounted(async () => {
   // 更新用户信息
+  showLoading.value = true;
   const originUser = await initUser();
   user.mail = originUser.mail;
   user.signature = originUser.signature;
@@ -131,10 +143,12 @@ onMounted(async () => {
   user.id = originUser.id;
   newMail.value = user.mail;
   newSignature.value = user.signature;
+  showLoading.value = false;
 });
 const showModal = ref<boolean>(false);
 
 const updateUserInfo = async () => {
+  showLoading.value = true;
   const res = await UserApi.updateUserInfo(
     user.id,
     newMail.value,
@@ -145,6 +159,7 @@ const updateUserInfo = async () => {
   user.signature = data.signature;
   message.success('更新成功');
   showModal.value = false;
+  showLoading.value = false;
 };
 </script>
 

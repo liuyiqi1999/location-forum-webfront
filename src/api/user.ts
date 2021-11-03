@@ -11,7 +11,7 @@ interface LoginReqArguInterface {
   username: string;
   password: number | string;
 }
-const loginReq = (
+export const loginReq = (
   data: LoginReqArguInterface
 ): AxiosPromise<ResponseInterface> => {
   return axios.request({
@@ -21,14 +21,14 @@ const loginReq = (
   }) as AxiosPromise<ResponseInterface>;
 };
 
-const getUserInfo = (id: string): AxiosPromise<ResponseInterface> => {
+export const getUserInfo = (id: string): AxiosPromise<ResponseInterface> => {
   return axios.request({
     url: '/user/user/' + id,
     method: 'GET',
   }) as AxiosPromise<ResponseInterface>;
 };
 
-const updateUserInfo = (
+export const updateUserInfo = (
   id: number,
   mail: string = '',
   signature: string = '',
@@ -46,4 +46,3 @@ const updateUserInfo = (
     method: 'PUT',
   }) as AxiosPromise<ResponseInterface>;
 };
-export { getUserInfo, loginReq, updateUserInfo };

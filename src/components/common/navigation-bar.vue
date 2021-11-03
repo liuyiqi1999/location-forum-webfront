@@ -128,11 +128,9 @@ watch(
   () => store.getters.getUsername,
   (val, old) => {
     isLogin.value = val != '';
-    showLoginModal.value = false;
   }
 );
 
-const showLoginModal = ref(false);
 const showUpdateModal = ref(false);
 const newPassword = ref('');
 
