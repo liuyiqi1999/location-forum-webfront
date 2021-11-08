@@ -5,6 +5,7 @@ export default createStore({
     userInfo: {
       username: '',
       id: 0,
+      role: 0,
     },
   },
   mutations: {
@@ -12,6 +13,13 @@ export default createStore({
     updateUser(state, action) {
       state.userInfo.username = action.username;
       state.userInfo.id = action.id;
+      state.userInfo.role = action.role;
+    },
+    clear(state) {
+      state.userInfo.username = '';
+      state.userInfo.id = 0;
+      state.userInfo.role = 0;
+      localStorage.setItem('token', '');
     },
   },
   actions: {},
@@ -22,6 +30,9 @@ export default createStore({
     },
     getUserId(state) {
       return state.userInfo.id;
+    },
+    getUserRole(state) {
+      return state.userInfo.role;
     },
   },
 });

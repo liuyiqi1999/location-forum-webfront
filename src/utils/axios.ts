@@ -6,7 +6,7 @@ import axios, {
 } from 'axios'; // 引入axios和定义在node_modules/axios/index.ts文件里的类型声明
 import qs from 'qs';
 
-const apiBaseUrl = 'http://192.168.31.86:8085';
+const apiBaseUrl = 'http://localhost:8085';
 
 class HttpRequest {
   // 定义一个接口请求类，用于创建一个axios请求实例
@@ -29,8 +29,8 @@ class HttpRequest {
         // 接口请求的所有配置，都在这个config对象中，他的类型是AxiosRequestConfig，你可以看到他有哪些字段
         // 如果你要修改接口请求配置，需要修改 axios.defaults 上的字段值
         config.headers = {
-          'Content-Type': 'application/x-www-form-urlencoded'
-        }
+          'Content-Type': 'application/x-www-form-urlencoded',
+        };
         if (localStorage.getItem('token')) {
           const token = localStorage.getItem('token');
           config.headers!.Authorization = `${token}`!;
@@ -45,7 +45,7 @@ class HttpRequest {
       (res: AxiosResponse) => {
         const { data } = res; // res的类型是AxiosResponse<any>，包含六个字段，其中data是服务端返回的数据
         const { code, msg } = data as any; // 通常服务端会将响应状态码、提示信息、数据等放到返回的数据中
-        if (code !== '200') {
+        if (code !== 200) {
           // 这里我们在服务端将正确返回的状态码标为200
           console.error(msg); // 如果不是200，则打印错误信息，我们后面讲到UI组件的时候，这里可以使用消息窗提示
         }
