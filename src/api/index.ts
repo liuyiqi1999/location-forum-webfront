@@ -3,3 +3,8 @@ export * from '../utils/axios';
 export default new HttpRequest();
 // 将api下的所有文件在index中以xxxApi的方式暴露出去
 export * as UserApi from './user';
+export interface ResponseInterface {
+  code: number;
+  data: any;
+  message: string;
+}

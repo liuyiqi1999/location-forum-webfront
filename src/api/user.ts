@@ -1,11 +1,5 @@
-import axios from './index';
+import axios, { ResponseInterface } from './index';
 import { AxiosPromise } from 'axios';
-
-export interface ResponseInterface {
-  code: number;
-  data: any;
-  message: string;
-}
 
 interface LoginReqArguInterface {
   username: string;
