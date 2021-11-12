@@ -6,3 +6,10 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+declare interface Window{
+  BMap:any,
+  BMapLib:any,
+  BMAP_ANCHOR_TOP_RIGHT:any,
+  BMAP_DRAWING_CIRCLE:any,
+}

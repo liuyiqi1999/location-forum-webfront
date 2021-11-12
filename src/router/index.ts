@@ -21,6 +21,11 @@ const routes = [
     },
     component: () => import('@/views/user/info/index.vue'),
   },
+  {
+    path: "/search",
+    name: "Search",
+    component:  () => import('@/views/user/search/index.vue'),
+  },
 ];
 
 // 导出路由
