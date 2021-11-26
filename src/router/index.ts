@@ -22,9 +22,19 @@ const routes = [
     component: () => import('@/views/user/info/index.vue'),
   },
   {
-    path: "/search",
-    name: "Search",
-    component:  () => import('@/views/user/search/index.vue'),
+    path: '/search',
+    name: 'Search',
+    component: () => import('@/views/user/search/index.vue'),
+  },
+  {
+    path: '/post/:id',
+    name: 'Post',
+    component: () => import('@/views/post/index.vue'),
+  },
+  {
+    path: '/',
+    name: 'index',
+    component: () => import('@/components/HelloWorld.vue'),
   },
 ];
 

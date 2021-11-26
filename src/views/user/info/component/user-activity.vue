@@ -6,6 +6,4 @@
     </n-tabs>
   </div>
 </template>
-<script lang="ts" setup>
-import { NTabs, NTabPane } from 'naive-ui';
-</script>
+<script lang="ts" setup></script>

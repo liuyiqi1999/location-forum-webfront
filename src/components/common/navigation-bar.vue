@@ -1,8 +1,12 @@
 <template>
-  <div style="padding-top: 20px; box-shadow: 2px 2px 8px rgb(206, 202, 202)">
+  <div style="padding-top: 20px">
+    <!-- box-shadow: 2px 2px 8px rgb(206, 202, 202) -->
     <n-grid>
-      <n-gi span="16">
-        <div class="forum">同城论坛</div>
+      <n-gi offset="2" span="14">
+        <img
+          width="170"
+          src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
+        />
       </n-gi>
       <n-gi span="2" v-if="isLogin">
         <div>
@@ -41,9 +45,11 @@
           </n-space>
         </div>
       </n-gi>
-      <n-gi span="2" v-if="!isLogin">
-        <div>
-          <n-button type="success" ghost @click="goLogin">登录</n-button>
+      <n-gi v-if="!isLogin" offset="4">
+        <div style="margin-top: 10px">
+          <n-button size="large" type="success" ghost @click="goLogin"
+            >登录</n-button
+          >
         </div>
       </n-gi>
     </n-grid>
