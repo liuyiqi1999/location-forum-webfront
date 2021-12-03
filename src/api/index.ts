@@ -11,3 +11,4 @@ export * as UserApi from './user';
 export * as PostApi from './post';
 export * as SearchApi from './search'
 export * as GetLocationApi from './getLocation'
+
