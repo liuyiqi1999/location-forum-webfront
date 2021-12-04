@@ -4,6 +4,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, unref, onMounted } from 'vue';
+import { GetLocationApi } from '@/api';
 
 export default defineComponent({
   name: 'BaiduMap',
@@ -119,18 +120,10 @@ export default defineComponent({
         div.style.border = '1px solid gray';
         div.style.backgroundColor = 'white';
         div.onclick = function (e: any) {
-          // var geolocation = new BMap.Geolocation();
-          // geolocation.getCurrentPosition(function(r){
-          // 	if(this.getStatus() == BMAP_STATUS_SUCCESS){
-          // 		var mk = new BMap.Marker(r.point);
-          // 		map.addOverlay(mk);
-          // 		map.panTo(r.point);
-          // 		alert('您的位置：'+r.point.lng+','+r.point.lat);
-          // 	}
-          // 	else {
-          // 		alert('failed'+this.getStatus());
-          // 	}
-          // });
+          GetLocationApi.getLocationFromBrowser((r:any)=>
+          {
+            console.log(r);
+          });
         };
         map.getContainer().appendChild(div);
         return div;
