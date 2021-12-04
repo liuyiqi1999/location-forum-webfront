@@ -29,8 +29,16 @@
               <span v-else>💬 收起评论 </span>
             </n-button>
             <n-button size="small" ghost> 🏷️ 分享 </n-button>
-            <n-button size="small" ghost> ✏️ 回答 </n-button>
-
+            <n-button size="small" ghost @click="showAnswerInputArea = true"> ✏️ 回答 </n-button>
+            <n-card class="input-area" v-if="showAnswerInputArea">
+              <input-area @input="handleInput" />
+              <template #action>
+                <div class="actions">
+                  <n-button class="reply-button" @click="showAnswerInputArea = false">取消</n-button>
+                  <n-button class="reply-button" type="primary">回答</n-button>
+                </div>
+              </template>
+            </n-card>
             <n-dropdown
               trigger="hover"
               @select="handleSelect"
@@ -105,16 +113,21 @@ import {
   BulbSharp as AnswerIcon,
   LogoDocker as CommentIcon,
 } from '@vicons/ionicons5';
+import InputArea from '../../../components/common/input-area.vue'
 const props = defineProps({
   data: Object,
 });
 const showComment = ref(false);
+const showAnswerInputArea = ref(false);
 const answer: IAnswer = props.data as IAnswer;
 console.log('answer ', answer);
 
 const handleSelect = () => {
   console.log(111);
 };
+const handleInput = (event: string) => {
+  console.log(event);
+}
 const answerOptions = [
   {
     key: 'report',

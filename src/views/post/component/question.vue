@@ -25,7 +25,7 @@
       <template #action>
         <n-space justify="end">
           <n-button size="small" ghost> 🏷️ 分享 </n-button>
-          <n-button size="small" ghost> ✏️ 回答 </n-button>
+          <!-- <n-button size="small" ghost> ✏️ 回答 </n-button> -->
 
           <n-dropdown
             trigger="hover"

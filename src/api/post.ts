@@ -40,3 +40,65 @@ export const getMyAnswer = (
     method: 'GET',
   }) as AxiosPromise<ResponseInterface>;
 };
+
+export const postQuestion = (
+  data:{
+    title: string,
+    content: string,
+    owner_id: number,
+    tagsList: string[],
+    longitude: number,
+    latitude: number,
+    city: string,
+    district: string,
+    province: string,
+    street: string
+  }
+): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/post/question/add',
+    method: 'POST', 
+    data
+  }) as AxiosPromise<ResponseInterface>;
+}
+
+export const postAnswer = (
+  data:{
+    post_id: number,
+    owner_id: number,
+    content: string,
+    longitude: number,
+    latitude: number,
+    city: string,
+    district: string,
+    province: string,
+    street: string
+  }
+): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/post/answer/add',
+    method: 'POST', 
+    data
+  }) as AxiosPromise<ResponseInterface>;
+}
+
+export const postComment = (
+  data: {
+    post_id: number,
+    block_id: number,
+    owner_id: number,
+    content: string,
+    longitude: number,
+    latitude: number,
+    city: string,
+    district: string,
+    province: string,
+    street: string
+  }
+): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/post/comment/add',
+    method: 'POST', 
+    data
+  }) as AxiosPromise<ResponseInterface>;
+}

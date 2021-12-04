@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import Question from './component/question.vue';
 import AnswerList from './component/answer-list.vue';
+import InputArea from '../../components/common/input-area.vue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 const props = defineProps({
@@ -10,11 +11,23 @@ const route = useRoute();
 let param = route.params.id ? route.query.id : props.id;
 console.log('帖子id为 ', param);
 const id = ref(param);
+const handleInput = (event: any) => {
+  console.log(event);
+};
 </script>
+
 <template>
   <div class="container">
     <question :id="id" class="box"></question>
     <answer-list :id="id" class="box"></answer-list>
+    <n-card class="box input-area">
+      <input-area @input="handleInput" />
+      <template #action>
+        <div class="actions">
+          <n-button class="reply-button" type="primary">回答</n-button>
+        </div>
+      </template>
+    </n-card>
   </div>
 </template>
 
@@ -22,7 +35,7 @@ const id = ref(param);
 .container {
   margin: auto;
   width: 100%;
-  min-height: 100%;
+  height: 100% !important;
   height: auto;
   background-color: rgb(246, 246, 246);
   padding-top: 1px;
@@ -31,5 +44,12 @@ const id = ref(param);
   margin: 20px auto;
   width: 80%;
   background-color: white;
+}
+.input-area {
+  width: 70%;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>
