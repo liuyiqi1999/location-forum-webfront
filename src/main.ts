@@ -30,6 +30,10 @@ import {
   NDynamicTags,
   NAlert,
   NDivider,
+  NLayoutContent,
+  NLayoutSider,
+  NBadge,
+  NSkeleton,
 } from 'naive-ui';
 const naive = create({
   components: [
@@ -57,6 +61,10 @@ const naive = create({
     NDynamicTags,
     NAlert,
     NDivider,
+    NLayoutContent,
+    NLayoutSider,
+    NBadge,
+    NSkeleton,
   ],
 });
 const app = createApp(App);
