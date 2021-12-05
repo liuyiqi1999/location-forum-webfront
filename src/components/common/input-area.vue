@@ -29,8 +29,6 @@
 
 <script setup>
 import { ref, onMounted, computed } from "vue";
-import { Marked } from "@ts-stack/markdown";
-import TurndownService from "turndown";
 import { NButton, NIcon } from 'naive-ui';
 import buttonsAction from "../hooks/buttons";
 import { TextBold as BoldIcon, TextItalic as ItalicIcon, ListBulleted as UlIcon, ListNumbered as OlIcon } from '@vicons/carbon';
