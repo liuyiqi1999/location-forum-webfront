@@ -81,8 +81,9 @@
       </n-space>
     </div>
     <n-modal
+      title="图片分享"
+      preset="card"
       v-model:show="showPictureModal"
-      preset="dialog"
       style="width: 700px"
     >
       <n-space vertical>
