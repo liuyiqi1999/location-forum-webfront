@@ -2,6 +2,7 @@
 import SearchItem from './component/search-item.vue';
 import SearchReuslt from './component/search-result.vue';
 import InputArea from '../../components/common/input-area.vue';
+import Rank from './component/rank.vue';
 import { provide, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useMessage } from 'naive-ui';
@@ -80,30 +81,39 @@ const handleSubmitQuestion = async () => {
 
 <template>
   <div class="container">
-    <n-space vertical>
-      <search-item @got-res="gotRes"></search-item>
-      <search-reuslt></search-reuslt>
-      <n-card class="input-area" style="margin-top: 50px">
-          <n-space align="center" style="margin-bottom: 20px;">
-            <span>标题</span>
-            <n-input
-              v-model:value="title"
-              @keydown.enter.prevent
-              placeholder="请输入标题"
-            />
-          </n-space>
-          <n-space align="center" style="margin-bottom: 20px;">
-            <span>标签</span>
-            <n-dynamic-tags v-model:value="tagsList" />
-          </n-space>
-        <input-area @input="handleInput" />
-        <template #action>
-          <n-space justify="end">
-            <n-button class="reply-button" type="primary" @click="handleSubmitQuestion">发帖</n-button>
-          </n-space>
-        </template>
-      </n-card>
-    </n-space>
+    <n-grid x-gap="30" :cols="4">
+      <n-gi :span="3">
+        <n-space vertical>
+        <search-item @got-res="gotRes"></search-item>
+        <search-reuslt></search-reuslt>
+        <n-card class="input-area" style="margin-top: 50px">
+            <n-space align="center" style="margin-bottom: 20px;">
+              <span>标题</span>
+              <n-input
+                v-model:value="title"
+                @keydown.enter.prevent
+                placeholder="请输入标题"
+              />
+            </n-space>
+            <n-space align="center" style="margin-bottom: 20px;">
+              <span>标签</span>
+              <n-dynamic-tags v-model:value="tagsList" />
+            </n-space>
+          <input-area @input="handleInput" />
+          <template #action>
+            <n-space justify="end">
+              <n-button class="reply-button" type="primary" @click="handleSubmitQuestion">发帖</n-button>
+            </n-space>
+          </template>
+        </n-card>
+      </n-space>
+      </n-gi>
+      <n-gi :span="1">
+        <n-space vertical>
+          <rank />
+        </n-space>
+      </n-gi>
+    </n-grid>
   </div>
 </template>
 
@@ -111,7 +121,7 @@ const handleSubmitQuestion = async () => {
 .container {
   margin: auto;
   margin-top: 100px;
-  width: 60%;
+  width: 80%;
   height: 100%;
 }
 </style>
