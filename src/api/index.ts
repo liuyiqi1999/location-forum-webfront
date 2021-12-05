@@ -9,6 +9,7 @@ export interface ResponseInterface {
 // 将api下的所有文件在index中以xxxApi的方式暴露出去
 export * as UserApi from './user';
 export * as PostApi from './post';
-export * as SearchApi from './search'
-export * as GetLocationApi from './getLocation'
+export * as SearchApi from './search';
+export * as GetLocationApi from './getLocation';
+export * as RankApi from './rank';
 

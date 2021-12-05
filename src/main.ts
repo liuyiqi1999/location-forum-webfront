@@ -28,7 +28,8 @@ import {
   NSpin,
   NImage,
   NDynamicTags,
-  NAlert
+  NAlert,
+  NDivider,
 } from 'naive-ui';
 const naive = create({
   components: [
@@ -54,7 +55,8 @@ const naive = create({
     NSpin,
     NImage,
     NDynamicTags,
-    NAlert
+    NAlert,
+    NDivider,
   ],
 });
 const app = createApp(App);
