@@ -15,7 +15,8 @@ export default defineComponent({
     },
     height: {
       type: String,
-      default: 'calc(100vh - 478px)',
+      // default: 'calc(100vh - 478px)',
+      default: '500px'
     },
   },
   setup(props, context) {

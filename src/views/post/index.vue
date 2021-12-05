@@ -1,33 +1,21 @@
 <script lang="ts" setup>
 import Question from './component/question.vue';
 import AnswerList from './component/answer-list.vue';
-import InputArea from '../../components/common/input-area.vue';
 import { ref } from 'vue';
 import { useRoute } from 'vue-router';
 const props = defineProps({
   id: String,
 });
 const route = useRoute();
-let param = route.params.id ? route.query.id : props.id;
+let param = route.params.id ? route.params.id : props.id;
 console.log('帖子id为 ', param);
 const id = ref(param);
-const handleInput = (event: any) => {
-  console.log(event);
-};
 </script>
 
 <template>
   <div class="container">
     <question :id="id" class="box"></question>
     <answer-list :id="id" class="box"></answer-list>
-    <n-card class="box input-area">
-      <input-area @input="handleInput" />
-      <template #action>
-        <div class="actions">
-          <n-button class="reply-button" type="primary">回答</n-button>
-        </div>
-      </template>
-    </n-card>
   </div>
 </template>
 

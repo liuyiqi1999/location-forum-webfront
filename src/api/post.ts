@@ -64,8 +64,8 @@ export const postQuestion = (
 
 export const postAnswer = (
   data:{
-    post_id: number,
-    owner_id: number,
+    post_id: string | number,
+    owner_id: string | number,
     content: string,
     longitude: number,
     latitude: number,
@@ -76,7 +76,7 @@ export const postAnswer = (
   }
 ): AxiosPromise<ResponseInterface> => {
   return axios.request({
-    url: '/post/answer/add',
+    url: '/post/question/answer/add',
     method: 'POST', 
     data
   }) as AxiosPromise<ResponseInterface>;
@@ -97,7 +97,7 @@ export const postComment = (
   }
 ): AxiosPromise<ResponseInterface> => {
   return axios.request({
-    url: '/post/comment/add',
+    url: '/post/question/comment/add',
     method: 'POST', 
     data
   }) as AxiosPromise<ResponseInterface>;

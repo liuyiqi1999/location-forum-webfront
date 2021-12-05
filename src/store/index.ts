@@ -2,23 +2,17 @@ import { createStore } from 'vuex';
 
 export default createStore({
   state: {
-    userInfo: {
-      username: '',
-      id: 0,
-      role: 0,
-    },
+    userInfo: JSON.parse(sessionStorage.getItem(`userInfo`) as string)||{},
   },
   mutations: {
     // 进行数据更新，改变数据状态
     updateUser(state, action) {
-      state.userInfo.username = action.username;
-      state.userInfo.id = action.id;
-      state.userInfo.role = action.role;
+      sessionStorage.setItem(`userInfo`, JSON.stringify(action));
+      state.userInfo = action;
     },
     clear(state) {
-      state.userInfo.username = '';
-      state.userInfo.id = 0;
-      state.userInfo.role = 0;
+      sessionStorage.setItem(`userInfo`, '');
+      state.userInfo = {};
       localStorage.setItem('token', '');
     },
   },
