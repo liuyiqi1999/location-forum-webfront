@@ -9,8 +9,7 @@
       <div class="content-text">
         {{ question.title }}
       </div>
-      <div>
-        {{ question.content?.content }}
+      <div v-html="question.content?.content">
       </div>
       <template #footer>
         <div style="color: grey">
@@ -25,8 +24,9 @@
       <template #action>
         <n-space justify="end">
           <n-button size="small" ghost @click="takePicture"> 🏷️ 分享 </n-button>
-          <n-button size="small" ghost> ✏️ 回答 </n-button>
-
+          <n-button size="small" ghost @click="showAnswerModal=true">
+            ✏️ 回答
+          </n-button>
           <n-dropdown
             trigger="hover"
             @select="handleSelect"
@@ -47,16 +47,36 @@
       </div>
       <img v-else id="pic-slot" style="width: 100%" />
     </n-modal>
+    <n-modal
+      style="width: 900px;"
+      v-model:show="showAnswerModal"
+      preset="card"
+      title="回复帖子"
+      size="medium"
+      :bordered="false"
+    >
+      <n-card class="box input-area">
+        <input-area @input="handleInput" />
+        <template #action>
+          <n-space justify="end">
+            <n-button class="reply-button" type="primary" @click="handleSubmitAnswer">回答</n-button>
+          </n-space>
+        </template>
+      </n-card>
+    </n-modal>
   </n-card>
 </template>
-<script lang="ts"></script>
 <script lang="ts" setup>
 import { onMounted, ref } from 'vue';
-import { PostApi } from '@/api';
+import { PostApi, GetLocationApi } from '@/api';
 import { IQuestion } from '@/entity';
 import { CommonUtil } from '@/utils';
 import html2canvas from 'html2canvas';
-
+import InputArea from '@/components/common/input-area.vue';
+import { useStore } from 'vuex';
+import { useMessage } from 'naive-ui';
+const message = useMessage();
+const store = useStore();
 const props = defineProps({
   id: String,
 });
@@ -105,6 +125,30 @@ const takePicture = () => {
     }
   );
 };
+
+const showAnswerModal = ref(false);
+const editingAnswer = ref('');
+const handleInput = (e: any) => {
+  editingAnswer.value = e;
+};
+const handleSubmitAnswer = async () => {
+  const ownerId = store.getters.getUserId;
+  GetLocationApi.getLocationData();
+  const locationData = JSON.parse(localStorage.getItem('address') || '');
+  const { data } = await PostApi.postAnswer({
+    post_id: props.id ?? 0,
+    owner_id: ownerId,
+    content: editingAnswer.value,
+    ...locationData,
+  });
+  if (data.code === 200) {
+    message.success('回复成功');
+    showAnswerModal.value = false;
+    location.reload();
+  } else {
+    message.error(`回复失败：${data.message}`);
+  }
+}
 </script>
 
 <style lang="scss" scoped>

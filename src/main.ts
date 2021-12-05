@@ -27,6 +27,7 @@ import {
   NInputGroupLabel,
   NSpin,
   NImage,
+  NDynamicTags,
 } from 'naive-ui';
 const naive = create({
   components: [
@@ -51,6 +52,7 @@ const naive = create({
     NInputGroupLabel,
     NSpin,
     NImage,
+    NDynamicTags
   ],
 });
 const app = createApp(App);

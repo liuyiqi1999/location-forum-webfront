@@ -4,6 +4,8 @@
     <n-grid>
       <n-gi offset="2" span="14">
         <img
+          class="icon"
+          @click="goSearch"
           width="170"
           src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
         />
@@ -133,6 +135,7 @@ const isLogin = ref(store.getters.getUsername != '');
 watch(
   () => store.getters.getUsername,
   (val, old) => {
+    console.log(val, old);
     isLogin.value = val != '';
   }
 );
@@ -178,6 +181,11 @@ const goLogin = () => {
     name: 'Login',
   });
 };
+const goSearch = () => {
+  router.push({
+    name: 'Search',
+  });
+};
 </script>
 
 <style lang="scss" scoped>
@@ -189,5 +197,8 @@ $barColor: v-bind(barColor);
   font-size: 35px;
   color: $barColor;
   font-weight: bolder;
+}
+.icon {
+  cursor: pointer;
 }
 </style>

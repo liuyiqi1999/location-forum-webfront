@@ -5,6 +5,12 @@ interface LoginReqArguInterface {
   username: string;
   password: number | string;
 }
+interface RegisterReqArguInterface {
+  username: string;
+  pw: string;
+  mail: string;
+  signature: string;
+}
 export const loginReq = (
   data: LoginReqArguInterface
 ): AxiosPromise<ResponseInterface> => {
@@ -14,6 +20,16 @@ export const loginReq = (
     method: 'POST',
   }) as AxiosPromise<ResponseInterface>;
 };
+
+export const registerReq = (
+  data: RegisterReqArguInterface
+): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/user/register',
+    data,
+    method: 'POST',
+  }) as AxiosPromise<ResponseInterface>;
+}
 
 export const getUserInfo = (id: string): AxiosPromise<ResponseInterface> => {
   return axios.request({
