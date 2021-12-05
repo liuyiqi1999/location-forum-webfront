@@ -1,5 +1,5 @@
 <template>
-  <n-card hoverable>
+  <n-card hoverable id="question-wrapper">
     <n-space>
       <n-tag v-for="item in question.tags" :key="item.id" type="success" round>
         {{ item.name }}
@@ -24,7 +24,7 @@
       </template>
       <template #action>
         <n-space justify="end">
-          <n-button size="small" ghost> 🏷️ 分享 </n-button>
+          <n-button size="small" ghost @click="takePicture"> 🏷️ 分享 </n-button>
           <n-button size="small" ghost> ✏️ 回答 </n-button>
 
           <n-dropdown
@@ -37,6 +37,16 @@
         </n-space>
       </template>
     </n-thing>
+    <n-modal v-model:show="showPictureModal" preset="dialog">
+      <div v-if="!picRendered">
+        <n-space>
+          <n-skeleton height="40px" circle />
+          <n-skeleton height="40px" width="66%" :sharp="false" />
+        </n-space>
+        <n-skeleton text :repeat="2" /> <n-skeleton text style="width: 60%" />
+      </div>
+      <img v-else id="pic-slot" style="width: 100%" />
+    </n-modal>
   </n-card>
 </template>
 <script lang="ts"></script>
@@ -45,6 +55,7 @@ import { onMounted, ref } from 'vue';
 import { PostApi } from '@/api';
 import { IQuestion } from '@/entity';
 import { CommonUtil } from '@/utils';
+import html2canvas from 'html2canvas';
 
 const props = defineProps({
   id: String,
@@ -81,6 +92,19 @@ const questionOptions = [
     label: '举报',
   },
 ];
+const showPictureModal = ref(false);
+const picRendered = ref(false);
+const takePicture = () => {
+  picRendered.value = false;
+  showPictureModal.value = true;
+  html2canvas(document.querySelector('#question-wrapper') as HTMLElement).then(
+    (canvas) => {
+      const dataUrl = canvas.toDataURL();
+      (document.querySelector('#pic-slot') as HTMLImageElement).src = dataUrl;
+      picRendered.value = true;
+    }
+  );
+};
 </script>
 
 <style lang="scss" scoped>
