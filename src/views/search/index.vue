@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import SearchItem from './component/search-item.vue';
 import SearchReuslt from './component/search-result.vue';
-// import CreateTopic from './component/create-topic.vue';
+import InputArea from '../../components/common/input-area.vue';
 import { provide, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useMessage } from 'naive-ui';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const message = useMessage();
+const store = useStore();
+import { GetLocationApi, PostApi } from '@/api';
 
 const res = ref();
 provide('res', res);
@@ -41,12 +48,62 @@ res.value = [
     viewTime: 1024,
   },
 ];
+
+const editingQuestion = ref('');
+const title = ref('');
+const tagsList = ref<string[]>();
+const handleInput = (e: string) => {
+  editingQuestion.value = e;
+};
+const handleSubmitQuestion = async () => {
+  const ownerId = store.getters.getUserId;
+  GetLocationApi.getLocationData();
+  const locationData = JSON.parse(localStorage.getItem('address') || '');
+  const { data } = await PostApi.postQuestion({
+    title: title.value,
+    content: editingQuestion.value,
+    owner_id: ownerId,
+    tagsList: tagsList.value,
+    ...locationData,
+  });
+  if (data.code === 200) {
+    const id = data.data;
+    message.success('发帖成功');
+    router.push({
+      path: `/post/${id}`,
+    })
+  } else {
+    message.error(`发帖失败：${data.message}`);
+  }
+};
 </script>
 
 <template>
   <div class="container">
-    <search-item @got-res="gotRes"></search-item>
-    <search-reuslt></search-reuslt>
+    <n-space vertical>
+      <search-item @got-res="gotRes"></search-item>
+      <search-reuslt></search-reuslt>
+      <n-card class="input-area" style="margin-top: 50px">
+          <n-space align="center" style="margin-bottom: 20px;">
+            <span>标题</span>
+            <n-input
+              v-model:value="title"
+              @keydown.enter.prevent
+              placeholder="请输入标题"
+            />
+          </n-space>
+          <n-space align="center" style="margin-bottom: 20px;">
+            <span>标签</span>
+            <n-dynamic-tags v-model:value="tagsList" />
+          </n-space>
+        <input-area @input="handleInput" />
+        <template #action>
+          <n-space justify="end">
+            <n-button class="reply-button" type="primary" @click="handleSubmitQuestion">发帖</n-button>
+          </n-space>
+        </template>
+      </n-card>
+    </n-space>
   </div>
 </template>
 
