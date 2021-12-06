@@ -1,5 +1,7 @@
 <template>
   <div>
+    <n-empty description="无搜索结果" v-if="search_res.result.length==0" style="margin-top:20px">
+    </n-empty>
     <n-list>
       <n-list-item v-for="(result, index) in search_res.result" :key="index">
         <div class="question-whole">

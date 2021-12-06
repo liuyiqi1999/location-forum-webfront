@@ -1,103 +1,54 @@
+<script lang="ts" setup>
+import { onMounted, ref } from 'vue';
+import { NTable, NSpace, NButton } from 'naive-ui';
+import { ReportSolutionApi } from '@/api';
+import { useStore } from 'vuex';
+
+const res = ref<Array<any>>();
+const totalPage = ref<number>();
+const store = useStore();
+
+onMounted(async () => {
+  const ownerId = store.getters.getUserId;
+  const _res = await ReportSolutionApi.getReported(0, 10, ownerId, 0);
+  res.value = _res.data.data.questions;
+  totalPage.value = _res.data.data.totalPage;
+});
+</script>
+
 <template>
   <div>
-    <n-list>
-      <n-list-item v-for="(result, index) in search_res" :key="index">
-        <div class="question-whole">
-          <div class="question-title">
-            {{ result.title }}
-          </div>
-          <div class="question-location">
-            <p
-              v-if="
-                !(
-                  !result.province &&
-                  !result.city &&
-                  !result.district &&
-                  !result.street
-                )
-              "
-            >
-              {{ result.province }}&nbsp;{{ result.city }}&nbsp;{{
-                result.district
-              }}&nbsp;{{ result.street }}
-            </p>
-            
-            <p
-              v-if="
-                !result.province &&
-                !result.city &&
-                !result.district &&
-                !result.street
-              "
-            >
-              暂无位置信息
-            </p>
-          </div>
-          &nbsp; &nbsp; &nbsp;
-          <div class="question-author">作者：{{ result.ownerName }}</div>
-          &nbsp; &nbsp; &nbsp;
-          <div class="question-viewTime">浏览量:{{ result.viewTime }}</div>
-          <div class="question-tags">
-            <div
-              v-for="(tag, index) in result.tags"
-              :key="index"
-              class="question-tag"
-            >
-              <n-tag v-if="index <= 3" type="success" round size="small"
-                >{{ tag.name }}
-              </n-tag>
-            </div>
-          </div>
-        </div>
-      </n-list-item>
-    </n-list>
+    <n-space vertical class="container">
+      <n-table striped>
+        <thead>
+          <tr>
+            <th class="c1">问题</th>
+            <th class="c2">作者</th>
+            <th class="c3">概览</th>
+            <th class="c4">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(target, index) in res" :key="index">
+            <td class="c1">{{ target.title }}</td>
+            <td class="c2">{{ target.ownerName }}</td>
+            <td class="c3">{{ target.content.content }}</td>
+            <td class="c4">
+              <n-space>
+                <n-button type="default">查看</n-button>
+                <n-button type="success">保留</n-button>
+                <n-button type="error">删除</n-button>
+              </n-space>
+            </td>
+          </tr>
+        </tbody>
+      </n-table>
+    </n-space>
   </div>
 </template>
 
-
-<script lang="ts" setup>
-import { inject, ref } from 'vue';
-import { NCard, NTag, NList, NListItem } from 'naive-ui';
-const search_res = inject('search_res') as any;
-
-</script>
-
-
 <style lang="scss" scoped>
-.question-whole {
-  padding-left:4%;
-  width: 100%;
-}
-.question-title {
-  font-size: 175%;
-  font-weight: bolder;
-  max-width: 40%;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  word-break: break-all;
-}
-.question-author {
-  max-width: 20%;
-}
-.question-tags {
-  margin-left: 2%;
-  margin-top: 0.2%;
-  max-width: 40%;
-  display: inline-block;
-  white-space: nowrap;
-  vertical-align: top;
-}
-.question-tag {
-  display: inline-block;
-  margin-left: 1%;
-}
-.question-location,
-.question-author,
-.question-viewTime {
-  margin-top: 0.2%;
-  font-size: 30%;
-  font-weight: lighter;
-  display: inline-block;
+.container {
+  padding: 20px;
 }
 </style>

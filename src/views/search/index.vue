@@ -14,6 +14,7 @@ import { GetLocationApi, PostApi } from '@/api';
 
 const search_res = ref(
   {
+    result:[],
     totalpage:-1
   }
 );
@@ -103,7 +104,7 @@ const handleSubmitQuestion = async () => {
   margin: auto;
   width: 100%;
   min-height: 100%;
-  height: auto;
+  height: auto !important;
   background-color: rgb(246, 246, 246);
   padding-top: 1px;
   padding-bottom: 400px;

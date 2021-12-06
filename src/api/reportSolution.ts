@@ -1,7 +1,7 @@
 import axios, { ResponseInterface } from './index';
 import { AxiosPromise } from 'axios';
 
-export const getReported = (page: number, size: number, userId: string, type: number): AxiosPromise<ResponseInterface> => {
+export const getReported = (page: number, size: number, userId: number, type: number): AxiosPromise<ResponseInterface> => {
     var requestType;
     switch (type) {
         case 0: requestType = "questions"; break;
@@ -14,8 +14,26 @@ export const getReported = (page: number, size: number, userId: string, type: nu
         userId:userId,
     };
     return axios.request({
-        url: '/admin/report/comments',
+        url: '/admin/report/'+requestType,
         params,
         method: 'GET',
+    }) as AxiosPromise<ResponseInterface>;
+};
+
+export const solveReported = (operation: number, userId: number, type: number , id:number): AxiosPromise<ResponseInterface> => {
+    var requestType;
+    switch (type) {
+        case 0: requestType = "Questions"; break;
+        case 1: requestType = "Answers"; break;
+        case 2: requestType = "Comments"; break;
+    }
+    const data = {
+        operation:operation,
+        userId:userId,
+    };
+    return axios.request({
+        url: '/admin/reverse'+requestType+'/'+id,
+        data,
+        method: 'PUT',
     }) as AxiosPromise<ResponseInterface>;
 };
