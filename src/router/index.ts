@@ -44,6 +44,11 @@ const routes = [
     name: 'index',
     component: () => import('@/components/HelloWorld.vue'),
   },
+  {
+    path: '/admin',
+    name: 'Admin',
+    component: () => import('@/views/admin/index.vue'),
+  },
 ];
 
 // 导出路由

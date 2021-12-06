@@ -11,8 +11,16 @@
           <n-button type="primary" @click="search(KEYWORD)">搜索</n-button>
         </n-input-group></n-tab-pane
       >
-      <n-tab-pane name="1" tab="TAG搜索"
-        ><n-input-group class="tag-input">
+      <n-tab-pane name="1" tab="TAG搜索">
+        <div class="tags">
+          <div style="width:75%;display:inline-block">
+            <n-dynamic-tags v-model:value="tags" />
+          </div>
+          <n-button type="primary" class="search-by-tags" @click="search(TAGS)">
+            以这些tag进行搜索
+          </n-button>
+        </div>
+        <n-input-group class="tag-input">
           <n-input v-model:value="keyword_for_tag" />
           <n-button type="primary" @click="getTags()">搜索tag</n-button>
         </n-input-group>
@@ -27,29 +35,11 @@
               type="success"
               @click="handleChoose(index)"
             >
-              {{ tag }}
+              {{tag.name}}
             </n-tag>
           </n-space>
         </div>
-        <div class="tags">
-          <n-space>
-            <n-tag
-              v-for="(tag, index) in tags"
-              :key="index"
-              size="small"
-              round
-              type="success"
-              closable
-              @close="handleClose(index)"
-            >
-              {{ tag }}
-            </n-tag>
-          </n-space>
-          <n-button type="primary" class="search-by-tags" @click="search(TAGS)">
-            以这些tag进行搜索
-          </n-button>
-        </div></n-tab-pane
-      >
+      </n-tab-pane>
       <n-tab-pane name="2" tab="作者搜索"
         ><n-input-group class="keyword-input">
           <n-input v-model:value="author" />
@@ -82,8 +72,8 @@ const LOCATION = 3;
 const ADDRESS = 4;
 
 const field = ref();
-const tags = ref(['do', 'da', 'de', 'di']);
-const tag_candidates = ref(['egg', 'eggmarket', 'eggplant']);
+const tags = ref<any[]>([]);
+const tag_candidates = ref<any[]>([]);
 const search_res = ref();
 const keyword = ref();
 const keyword_for_tag = ref();
@@ -93,16 +83,9 @@ const currentSearchingInfo = ref({
   content: {},
 });
 
-const handleClose = (index: number) => {
-  console.log(index);
-  for (let i = index; i < tags.value.length; i++)
-    tags.value[i] = tags.value[i + 1];
-  tags.value.pop();
-};
-
 const handleChoose = (index: number) => {
   console.log(index);
-  tags.value.push(tag_candidates.value[index]);
+  tags.value.push(tag_candidates.value[index].name);
   for (let i = index; i < tag_candidates.value.length; i++)
     tag_candidates.value[i] = tag_candidates.value[i + 1];
   tag_candidates.value.pop();
@@ -131,9 +114,10 @@ const search = async (type: number) => {
       currentSearchingInfo.value.content = { keyword: keyword.value };
       break;
     case TAGS:
-      const res_tags = await SearchApi.searchTags(0, 10, tags.value);
+      var tagDataString = JSON.stringify(tags.value);
+      const res_tags = await SearchApi.searchTags(0, 10, tagDataString);
       search_res.value = res_tags.data.data;
-      currentSearchingInfo.value.content = { tags: tags.value };
+      currentSearchingInfo.value.content = { tags: tagDataString };
       break;
     case AUTHOR:
       const res_author = await SearchApi.searchAuthor(0, 10, author.value);
@@ -171,7 +155,8 @@ const search = async (type: number) => {
 .keyword-input {
 }
 .tag-input {
-  width:93%
+  margin-top: 2%;
+  width: 90%;
 }
 .tag-auto {
   margin-left: 1%;
@@ -184,11 +169,12 @@ const search = async (type: number) => {
   border-radius: 10px;
 }
 .tags {
-  background-color: #0000000a;
+  background-color: #00000009;
 }
 .search-by-tags {
   margin: 1%;
-  margin-left: 85%;
+  margin-top:-3px;
+  float: right;
 }
 .map-container {
   margin-top: 1%;

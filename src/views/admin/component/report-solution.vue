@@ -1,7 +1,7 @@
 <template>
   <div>
     <n-list>
-      <n-list-item v-for="(result, index) in search_res.result" :key="index">
+      <n-list-item v-for="(result, index) in search_res" :key="index">
         <div class="question-whole">
           <div class="question-title">
             {{ result.title }}
@@ -51,17 +51,15 @@
         </div>
       </n-list-item>
     </n-list>
-    <n-pagination v-model:page="page" :page-count="search_res.totalPage" style="margin:auto"/>
   </div>
 </template>
 
 
 <script lang="ts" setup>
 import { inject, ref } from 'vue';
-import { NCard, NTag, NList, NListItem ,NPagination} from 'naive-ui';
+import { NCard, NTag, NList, NListItem } from 'naive-ui';
 const search_res = inject('search_res') as any;
-const search_info = inject('search_info') as any;
-const page = ref(1);
+
 </script>
 
 

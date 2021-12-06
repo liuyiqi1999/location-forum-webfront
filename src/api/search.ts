@@ -69,11 +69,11 @@ export const searchLocation = (page: number, size: number, longitude: number, la
   }) as AxiosPromise<ResponseInterface>;
 }
 
-export const searchTags = (page: number, size: number, tag: Array<string>): AxiosPromise<ResponseInterface> => {
+export const searchTags = (page: number, size: number, tags: string): AxiosPromise<ResponseInterface> => {
   const params = {
     page: page,
     size: size,
-    tag: tag,
+    tags: tags,
   };
   return axios.request({
     url: 'search/search_tags',

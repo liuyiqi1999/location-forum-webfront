@@ -58,7 +58,7 @@ const handleSubmitQuestion = async () => {
         <n-space vertical>
           <search-item @start-search="startSearch" class="box"></search-item>
           <search-reuslt class="box"></search-reuslt>
-          <n-card class="input-area" style="margin-top: 50px">
+          <n-card class="input-area" >
             <n-space align="center" style="margin-bottom: 20px">
               <span>标题</span>
               <n-input
@@ -86,7 +86,7 @@ const handleSubmitQuestion = async () => {
         </n-space>
       </n-gi>
       <n-gi :span="1">
-        <n-space vertical>
+        <n-space vertical class="rank">
           <rank />
         </n-space>
       </n-gi>
@@ -104,10 +104,18 @@ const handleSubmitQuestion = async () => {
   padding-top: 1px;
   padding-bottom: 400px;
 }
-.box {
+.box ,.input-area{
   margin: 20px auto;
   width: 80%;
   background-color: white;
   padding:1%;
+}
+
+.rank{
+  margin: 20px auto;
+  margin-left: -15%;
+  width:80%;
+  padding: 0;
+  background: none;
 }
 </style>
