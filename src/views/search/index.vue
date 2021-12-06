@@ -4,57 +4,40 @@ import SearchReuslt from './component/search-result.vue';
 // import CreateTopic from './component/create-topic.vue';
 import { provide, ref } from 'vue';
 
-const res = ref();
-provide('res', res);
+const search_res = ref();
+const search_info = ref();
+provide('search_res', search_res);
+provide('search_info', search_info);
 
-const gotRes = (param: any) => {
-  res.value = param;
+const startSearch = (param: any) => {
+  search_res.value = param.search_res;
+  search_info.value = param.search_info;
 };
 
-//测试用
-res.value = [
-  {
-    id: 2,
-    title: '程序员1怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: false,
-    viewTime: 1024,
-  },
-  {
-    id: 3,
-    title: '程序员2怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: true,
-    viewTime: 1024,
-  },
-  {
-    id: 4,
-    title: '程序员3怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: false,
-    viewTime: 1024,
-  },
-];
+
 </script>
 
 <template>
   <div class="container">
-    <search-item @got-res="gotRes"></search-item>
-    <search-reuslt></search-reuslt>
+    <search-item @start-search="startSearch" class="box"></search-item>
+    <search-reuslt class="box"></search-reuslt>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .container {
   margin: auto;
-  margin-top: 100px;
-  width: 60%;
-  height: 100%;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  background-color: rgb(246, 246, 246);
+  padding-top: 1px;
+  padding-bottom: 400px;
+}
+.box {
+  margin: 20px auto;
+  width: 80%;
+  background-color: white;
+  padding:1%;
 }
 </style>
