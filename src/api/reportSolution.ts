@@ -14,7 +14,7 @@ export const getReported = (page: number, size: number, userId: string, type: nu
         userId:userId,
     };
     return axios.request({
-        url: 'search/search_keyword',
+        url: '/admin/report/comments',
         params,
         method: 'GET',
     }) as AxiosPromise<ResponseInterface>;

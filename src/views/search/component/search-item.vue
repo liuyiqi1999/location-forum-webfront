@@ -13,7 +13,7 @@
       >
       <n-tab-pane name="1" tab="TAG搜索">
         <div class="tags">
-          <div style="width:75%;display:inline-block">
+          <div style="width: 75%; display: inline-block">
             <n-dynamic-tags v-model:value="tags" />
           </div>
           <n-button type="primary" class="search-by-tags" @click="search(TAGS)">
@@ -35,7 +35,7 @@
               type="success"
               @click="handleChoose(index)"
             >
-              {{tag.name}}
+              {{ tag.name }}
             </n-tag>
           </n-space>
         </div>
@@ -114,7 +114,7 @@ const search = async (type: number) => {
       currentSearchingInfo.value.content = { keyword: keyword.value };
       break;
     case TAGS:
-      var tagDataString = JSON.stringify(tags.value);
+      var tagDataString = tags.value.join();
       const res_tags = await SearchApi.searchTags(0, 10, tagDataString);
       search_res.value = res_tags.data.data;
       currentSearchingInfo.value.content = { tags: tagDataString };
@@ -173,7 +173,7 @@ const search = async (type: number) => {
 }
 .search-by-tags {
   margin: 1%;
-  margin-top:-3px;
+  margin-top: -3px;
   float: right;
 }
 .map-container {
