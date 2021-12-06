@@ -21,7 +21,7 @@
                 result.district
               }}&nbsp;{{ result.street }}
             </p>
-            
+
             <p
               v-if="
                 !result.province &&
@@ -51,23 +51,75 @@
         </div>
       </n-list-item>
     </n-list>
-    <n-pagination v-model:page="page" :page-count="search_res.totalPage" style="margin:auto"/>
+    <n-pagination
+      v-model:page="pageNum"
+      :page-count="search_res.totalPage"
+      style="float: right"
+      :on-update:page="getAnotherPage"
+      v-if="search_res.totalPage > 0"
+    />
   </div>
 </template>
 
 
 <script lang="ts" setup>
 import { inject, ref } from 'vue';
-import { NCard, NTag, NList, NListItem ,NPagination} from 'naive-ui';
+import { NCard, NTag, NList, NListItem, NPagination } from 'naive-ui';
+import { SearchApi } from '@/api';
+
 const search_res = inject('search_res') as any;
 const search_info = inject('search_info') as any;
-const page = ref(1);
+const pageNum = ref(1);
+
+const getAnotherPage = async (page: number) => {
+  console.log(page);
+  switch (search_info.value.type) {
+    case 0:
+      const res_keyword = await SearchApi.searchKeyword(
+        page - 1,
+        10,
+        search_info.value.content.keyword
+      );
+      search_res.value = res_keyword.data.data;
+      break;
+    case 1:
+      const res_tags = await SearchApi.searchTags(
+        page - 1,
+        10,
+        search_info.value.content.tags
+      );
+      search_res.value = res_tags.data.data;
+      break;
+    case 2:
+      const res_author = await SearchApi.searchAuthor(
+        page - 1,
+        10,
+        search_info.value.content.author
+      );
+      search_res.value = res_author.data.data;
+      break;
+    case 3:
+      const res_location = await SearchApi.searchLocation(
+        page - 1,
+        10,
+        search_info.value.content.longitude,
+        search_info.value.content.latitude,
+        search_info.value.content.radius
+      );
+      search_res.value = res_location.data.data;
+      break;
+    case 4:
+      break;
+  }
+  console.log(search_res.value);
+  pageNum.value = page;
+};
 </script>
 
 
 <style lang="scss" scoped>
 .question-whole {
-  padding-left:4%;
+  padding-left: 4%;
   width: 100%;
 }
 .question-title {

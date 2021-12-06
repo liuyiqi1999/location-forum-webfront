@@ -12,7 +12,11 @@ const message = useMessage();
 const store = useStore();
 import { GetLocationApi, PostApi } from '@/api';
 
-const search_res = ref();
+const search_res = ref(
+  {
+    totalpage:-1
+  }
+);
 const search_info = ref();
 provide('search_res', search_res);
 provide('search_info', search_info);
@@ -57,7 +61,7 @@ const handleSubmitQuestion = async () => {
       <n-gi :span="3">
         <n-space vertical>
           <search-item @start-search="startSearch" class="box"></search-item>
-          <search-reuslt class="box"></search-reuslt>
+          <search-reuslt class="box" style="padding-bottom:40px"></search-reuslt>
           <n-card class="input-area" >
             <n-space align="center" style="margin-bottom: 20px">
               <span>标题</span>
