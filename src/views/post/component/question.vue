@@ -167,7 +167,8 @@ onMounted(async () => {
   console.log('onMounted');
 });
 
-const handleSelect = () => {
+const handleSelect = async () => {
+  await PostApi.reportQuestion(question.value.id);
   console.log(111);
 };
 const questionOptions = [

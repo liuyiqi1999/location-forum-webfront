@@ -15,7 +15,10 @@
           </div></template
         >
         <template #description>
-          <div class="text-grey">⏳ 创建于 {{ answer.createTime }}</div>
+          <div class="text-grey">
+            ⏳ 创建于 {{ answer.createTime }} &nbsp;&nbsp;&nbsp;&nbsp;🌏
+            位置：{{ answer.address }}
+          </div>
         </template>
         <div v-if="!answer.isDeleted" v-html="answer.content"></div>
         <n-empty v-else description="该回答因违反论坛规范而被删除"></n-empty>
@@ -28,11 +31,12 @@
               </span>
               <span v-else>💬 收起评论 </span>
             </n-button>
-            <n-button size="small" ghost> 🏷️ 分享 </n-button>
-            <n-button size="small" ghost @click="showAnswerInputArea = true"> ✏️ 回答 </n-button>
+            <n-button size="small" ghost @click="showAnswerInputArea = true">
+              ✏️ 回答
+            </n-button>
             <n-dropdown
               trigger="hover"
-              @select="handleSelect"
+              @select="handleSelect('answer', answer.id)"
               :options="answerOptions"
               :show-arrow="true"
               >...</n-dropdown
@@ -43,8 +47,17 @@
               <input-area @input="handleInput" />
               <template #action>
                 <n-space class="actions" justify="end">
-                  <n-button class="reply-button" @click="showAnswerInputArea = false">取消</n-button>
-                  <n-button class="reply-button" type="primary" @click="handleSubmitComment">回答</n-button>
+                  <n-button
+                    class="reply-button"
+                    @click="showAnswerInputArea = false"
+                    >取消</n-button
+                  >
+                  <n-button
+                    class="reply-button"
+                    type="primary"
+                    @click="handleSubmitComment"
+                    >回答</n-button
+                  >
                 </n-space>
               </template>
             </n-card>
@@ -79,7 +92,10 @@
                 </template>
                 <template #description>
                   <div class="text-grey">
-                    ⏳ 创建于 {{ comment.createTime }}
+                    ⏳ 创建于
+                    {{ comment.createTime }} &nbsp;&nbsp;&nbsp;&nbsp;🌏 位置：{{
+                      comment.address
+                    }}
                   </div>
                 </template>
 
@@ -92,7 +108,7 @@
                   <n-space justify="end">
                     <n-dropdown
                       trigger="hover"
-                      @select="handleSelect"
+                      @select="handleSelect('comment', comment.id)"
                       :options="answerOptions"
                       :show-arrow="true"
                       >...</n-dropdown
@@ -116,10 +132,10 @@ import {
   LogoDocker as CommentIcon,
 } from '@vicons/ionicons5';
 import InputArea from '../../../components/common/input-area.vue';
-import {useStore} from 'vuex';
-import {GetLocationApi, PostApi} from '@/api';
-import {useMessage} from 'naive-ui';
-import {useRoute} from 'vue-router';
+import { useStore } from 'vuex';
+import { GetLocationApi, PostApi } from '@/api';
+import { useMessage } from 'naive-ui';
+import { useRoute } from 'vue-router';
 const route = useRoute();
 const message = useMessage();
 const store = useStore();
@@ -130,15 +146,19 @@ const props = defineProps({
 const showComment = ref(false);
 const showAnswerInputArea = ref(false);
 const answer: IAnswer = props.data as IAnswer;
-console.log('answer ', answer);
 
-const handleSelect = () => {
-  console.log(111);
+const handleSelect = async (type: string, id: number) => {
+  console.log(`handleSelect type:${type} , id:${id} `);
+  if (type == 'answer') {
+    await PostApi.reportAnswer(id);
+  } else {
+    await PostApi.reportComment(id);
+  }
 };
-const editingComment = ref ('')
+const editingComment = ref('');
 const handleInput = (event: string) => {
   editingComment.value = event;
-}
+};
 const answerOptions = [
   {
     key: 'report',
@@ -165,7 +185,7 @@ const handleSubmitComment = async () => {
   } else {
     message.error(`评论失败：${data.message}`);
   }
-}
+};
 </script>
 <style lang="scss" scoped>
 .text-grey {

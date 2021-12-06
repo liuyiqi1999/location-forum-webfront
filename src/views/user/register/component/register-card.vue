@@ -74,13 +74,13 @@ const register = async (e: any) => {
     username: registerForm.value.username,
     pw: registerForm.value.password,
     mail: registerForm.value.email,
-    signature: registerForm.value.signature
+    signature: registerForm.value.signature,
   });
   if (data.code === 200) {
-    message.success('登陆成功');
+    message.success('注册成功');
     goLogin();
   } else {
-    message.error(`登陆失败：${data.message}`);
+    message.error(`注册失败：${data.message}`);
   }
 };
 </script>

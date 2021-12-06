@@ -12,4 +12,4 @@ export * as PostApi from './post';
 export * as SearchApi from './search';
 export * as GetLocationApi from './getLocation';
 export * as RankApi from './rank';
-
+export * as NoticeApi from './notice';

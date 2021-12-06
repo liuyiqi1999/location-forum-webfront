@@ -15,7 +15,7 @@ const id = ref(param);
 <template>
   <div class="container">
     <question :id="id" class="box"></question>
-    <answer-list :id="id" class="box"></answer-list>
+    <answer-list :id="id"></answer-list>
   </div>
 </template>
 
@@ -23,8 +23,9 @@ const id = ref(param);
 .container {
   margin: auto;
   width: 100%;
-  height: 100% !important;
-  height: auto;
+  min-height: 100%;
+  // height: 100% !important;
+  height: auto !important;
   background-color: rgb(246, 246, 246);
   padding-top: 1px;
 }
