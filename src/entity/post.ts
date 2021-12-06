@@ -38,6 +38,7 @@ export interface IAnswer {
   isDeleted: number;
   replySet: Comment[];
   ownerName: String;
+  address?: String;
 }
 
 interface Comment {
@@ -54,4 +55,5 @@ interface Comment {
   street: String;
   isDeleted: number;
   ownerName: String;
+  address?: String;
 }

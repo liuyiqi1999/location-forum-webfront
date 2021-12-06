@@ -14,11 +14,16 @@
           个人主页
         </h1>
         <div style="display: inline-block">
-          <n-avatar
+          <n-image
+            style="border-radius: 100%"
+            width="170"
+            src="https://gitee.com/zqh1024/typora_img/raw/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20211030182351.jpg"
+          />
+          <!-- <n-avatar
             circle
             :size="170"
             src="https://gitee.com/zqh1024/typora_img/raw/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20211030182351.jpg"
-          />
+          /> -->
         </div>
         <div class="user-info">
           <div class="info-item">

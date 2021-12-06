@@ -6,7 +6,7 @@ import NavigationBar from './components/common/navigation-bar.vue';
 <template>
   <n-message-provider>
     <navigation-bar />
-    <router-view />
+    <router-view style="height: 100%"/>
   </n-message-provider>
 </template>
 

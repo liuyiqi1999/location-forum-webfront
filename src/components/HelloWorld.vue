@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import Post from '@/views/post/index.vue';
+import WordCloud from './common/word-cloud.vue';
 
 const count = ref(0);
 </script>
@@ -8,7 +9,8 @@ const count = ref(0);
 <template>
   <div>
     <!-- 测试界面 -->
-    <Post id="1"></Post>
+    <!-- <Post id="1"></Post> -->
+    <WordCloud></WordCloud>
   </div>
 </template>
 

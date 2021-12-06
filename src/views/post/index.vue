@@ -7,14 +7,15 @@ const props = defineProps({
   id: String,
 });
 const route = useRoute();
-let param = route.params.id ? route.query.id : props.id;
+let param = route.params.id ? route.params.id : props.id;
 console.log('帖子id为 ', param);
 const id = ref(param);
 </script>
+
 <template>
   <div class="container">
     <question :id="id" class="box"></question>
-    <answer-list :id="id" class="box"></answer-list>
+    <answer-list :id="id"></answer-list>
   </div>
 </template>
 
@@ -23,7 +24,8 @@ const id = ref(param);
   margin: auto;
   width: 100%;
   min-height: 100%;
-  height: auto;
+  // height: 100% !important;
+  height: auto !important;
   background-color: rgb(246, 246, 246);
   padding-top: 1px;
 }
@@ -31,5 +33,12 @@ const id = ref(param);
   margin: 20px auto;
   width: 80%;
   background-color: white;
+}
+.input-area {
+  width: 70%;
+}
+.actions {
+  display: flex;
+  justify-content: flex-end;
 }
 </style>

@@ -4,6 +4,8 @@
     <n-grid>
       <n-gi offset="2" span="14">
         <img
+          class="icon"
+          @click="goSearch"
           width="170"
           src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
         />
@@ -18,9 +20,9 @@
         </div>
       </n-gi>
       <n-gi span="2" v-if="isLogin">
-        <div>
+        <div @click="goMessage">
           <n-space :size="24" align="center">
-            <n-badge :value="messageNum" :max="15">
+            <n-badge :value="messageNum" :max="100" type="success">
               <n-icon size="30" color="#A6A6A6">
                 <message-icon></message-icon>
               </n-icon>
@@ -53,6 +55,7 @@
         </div>
       </n-gi>
     </n-grid>
+
     <!-- 更新密码 -->
     <n-modal v-model:show="showUpdateModal" preset="dialog" title="更新密码">
       <div>
@@ -71,22 +74,8 @@
 </template>
 
 <script lang="ts" setup>
-import { defineComponent, h, ref, watch } from 'vue';
-import {
-  NIcon,
-  NButton,
-  NGrid,
-  NSpace,
-  NBadge,
-  NAvatar,
-  NGi,
-  NDropdown,
-  NModal,
-  NInput,
-  NInputGroup,
-  NInputGroupLabel,
-  useMessage,
-} from 'naive-ui';
+import { defineComponent, h, onMounted, onUnmounted, ref, watch } from 'vue';
+import { NAvatar, NIcon, useMessage, useNotification } from 'naive-ui';
 import { RouterLink, useRouter } from 'vue-router';
 import {
   NotificationsOutline as MessageIcon,
@@ -96,10 +85,10 @@ import {
   SearchSharp as SearchIcon,
 } from '@vicons/ionicons5';
 import { useStore } from 'vuex';
-import { UserApi } from '@/api';
+import { NoticeApi, UserApi } from '@/api';
 
 // 新消息的数量
-const messageNum = ref(4);
+const messageNum = ref(0);
 const renderIcon = (icon: any, color: string) => {
   return () => {
     return h(NIcon, null, {
@@ -128,24 +117,54 @@ const userOptions = [
 ];
 
 const store = useStore();
-const isLogin = ref(store.getters.getUsername != '');
+const isLogin = ref(
+  store.getters.getUserInfo && JSON.stringify(store.getters.getUserInfo) != '{}'
+);
 // 监听store数据，判断用户是否登录
 watch(
   () => store.getters.getUsername,
-  (val, old) => {
-    isLogin.value = val != '';
+  async (val, old) => {
+    console.log(val, old);
+    isLogin.value =
+      store.getters.getUserInfo &&
+      JSON.stringify(store.getters.getUserInfo) != '{}';
+    if (isLogin.value) {
+      await updateMessageNum(store.getters.getUserId);
+    }
   }
 );
+onMounted(async () => {
+  if (isLogin.value) {
+    await updateMessageNum(store.getters.getUserId);
+  }
+});
+const message = useMessage();
+let timer: any;
+const updateMessageNum = async (id: number) => {
+  console.log(' updateMessageNum id', id);
+  if (isLogin.value && store.getters.getUserId) {
+    const { data } = await NoticeApi.getUnreadMessageNum(id);
+    let num = data.data;
+    console.log('num', num);
 
+    if (num > messageNum.value) {
+      message.info(`您已收到 ${num - messageNum.value} 个新消息`);
+      messageNum.value = num;
+    }
+    timer = setInterval(() => {
+      setTimeout(updateMessageNum, 1000, id);
+    }, 60 * 1000);
+    // await updateMessageNum(id);
+  }
+};
 const showUpdateModal = ref(false);
 const newPassword = ref('');
-
 const handleSelect = (key: any) => {
   if (key == 'logout') {
     store.commit('clear');
     goLogin();
   } else if (key == 'userInfo') {
-    if (store.getters.getUserRole == 0) {
+    if (store.getters.getUserRole == 1) {
       router.push({
         name: 'UserInfo',
       });
@@ -161,7 +180,7 @@ const handleSelect = (key: any) => {
   }
   console.log(key);
 };
-const message = useMessage();
+
 const updateUserPassword = async () => {
   await UserApi.updateUserInfo(
     store.getters.getUserId,
@@ -178,6 +197,20 @@ const goLogin = () => {
     name: 'Login',
   });
 };
+const goSearch = () => {
+  router.push({
+    name: 'Search',
+  });
+};
+const goMessage = () => {
+  router.push({
+    name: 'Message',
+  });
+};
+//清除计时器
+onUnmounted(() => {
+  clearInterval(timer);
+});
 </script>
 
 <style lang="scss" scoped>
@@ -189,5 +222,8 @@ $barColor: v-bind(barColor);
   font-size: 35px;
   color: $barColor;
   font-weight: bolder;
+}
+.icon {
+  cursor: pointer;
 }
 </style>
