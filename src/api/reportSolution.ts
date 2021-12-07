@@ -20,12 +20,12 @@ export const getReported = (page: number, size: number, userId: number, type: nu
     }) as AxiosPromise<ResponseInterface>;
 };
 
-export const solveReported = (operation: number, userId: number, type: number , id:number): AxiosPromise<ResponseInterface> => {
+export const solveReport = (operation: number, userId: number, type: number , id:number): AxiosPromise<ResponseInterface> => {
     var requestType;
     switch (type) {
-        case 0: requestType = "Questions"; break;
-        case 1: requestType = "Answers"; break;
-        case 2: requestType = "Comments"; break;
+        case 0: requestType = "Question"; break;
+        case 1: requestType = "Answer"; break;
+        case 2: requestType = "Comment"; break;
     }
     const data = {
         operation:operation,
