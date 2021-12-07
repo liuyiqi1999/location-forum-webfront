@@ -12,43 +12,20 @@ const message = useMessage();
 const store = useStore();
 import { GetLocationApi, PostApi } from '@/api';
 
-const res = ref();
-provide('res', res);
+const search_res = ref(
+  {
+    result:[],
+    totalpage:-1
+  }
+);
+const search_info = ref();
+provide('search_res', search_res);
+provide('search_info', search_info);
 
-const gotRes = (param: any) => {
-  res.value = param;
+const startSearch = (param: any) => {
+  search_res.value = param.search_res;
+  search_info.value = param.search_info;
 };
-
-//测试用
-res.value = [
-  {
-    id: 2,
-    title: '程序员1怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: false,
-    viewTime: 1024,
-  },
-  {
-    id: 3,
-    title: '程序员2怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: true,
-    viewTime: 1024,
-  },
-  {
-    id: 4,
-    title: '程序员3怎么伪装才能不让别人看出自己菜？',
-    author: '程序猎人',
-    tags: ['程序员修养', '伪装', '程序猿生存必备', '1024开发者节'],
-    createTime: '2021-11-18 17:27',
-    isDeleted: false,
-    viewTime: 1024,
-  },
-];
 
 const editingQuestion = ref('');
 const title = ref('');
@@ -72,7 +49,7 @@ const handleSubmitQuestion = async () => {
     message.success('发帖成功');
     router.push({
       path: `/post/${id}`,
-    })
+    });
   } else {
     message.error(`发帖失败：${data.message}`);
   }
@@ -84,10 +61,10 @@ const handleSubmitQuestion = async () => {
     <n-grid x-gap="30" :cols="4">
       <n-gi :span="3">
         <n-space vertical>
-        <search-item @got-res="gotRes"></search-item>
-        <search-reuslt></search-reuslt>
-        <n-card class="input-area" style="margin-top: 50px">
-            <n-space align="center" style="margin-bottom: 20px;">
+          <search-item @start-search="startSearch" class="box"></search-item>
+          <search-reuslt class="box" style="padding-bottom:40px"></search-reuslt>
+          <n-card class="input-area" >
+            <n-space align="center" style="margin-bottom: 20px">
               <span>标题</span>
               <n-input
                 v-model:value="title"
@@ -95,21 +72,26 @@ const handleSubmitQuestion = async () => {
                 placeholder="请输入标题"
               />
             </n-space>
-            <n-space align="center" style="margin-bottom: 20px;">
+            <n-space align="center" style="margin-bottom: 20px">
               <span>标签</span>
               <n-dynamic-tags v-model:value="tagsList" />
             </n-space>
-          <input-area @input="handleInput" />
-          <template #action>
-            <n-space justify="end">
-              <n-button class="reply-button" type="primary" @click="handleSubmitQuestion">发帖</n-button>
-            </n-space>
-          </template>
-        </n-card>
-      </n-space>
+            <input-area @input="handleInput" />
+            <template #action>
+              <n-space justify="end">
+                <n-button
+                  class="reply-button"
+                  type="primary"
+                  @click="handleSubmitQuestion"
+                  >发帖</n-button
+                >
+              </n-space>
+            </template>
+          </n-card>
+        </n-space>
       </n-gi>
       <n-gi :span="1">
-        <n-space vertical>
+        <n-space vertical class="rank">
           <rank />
         </n-space>
       </n-gi>
@@ -120,8 +102,25 @@ const handleSubmitQuestion = async () => {
 <style lang="scss" scoped>
 .container {
   margin: auto;
-  margin-top: 100px;
+  width: 100%;
+  min-height: 100%;
+  height: auto !important;
+  background-color: rgb(246, 246, 246);
+  padding-top: 1px;
+  padding-bottom: 400px;
+}
+.box ,.input-area{
+  margin: 20px auto;
   width: 80%;
-  height: 100%;
+  background-color: white;
+  padding:1%;
+}
+
+.rank{
+  margin: 20px auto;
+  margin-left: -15%;
+  width:80%;
+  padding: 0;
+  background: none;
 }
 </style>
