@@ -154,6 +154,7 @@ const handleSelect = async (type: string, id: number) => {
   } else {
     await PostApi.reportComment(id);
   }
+  message.success('感谢您的反馈');
 };
 const editingComment = ref('');
 const handleInput = (event: string) => {

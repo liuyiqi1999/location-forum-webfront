@@ -121,3 +121,19 @@ export const getFrequentlyUsedTags = (): AxiosPromise<ResponseInterface> => {
     method: 'GET',
   }) as AxiosPromise<ResponseInterface>;
 };
+
+export const getUserQuestions = (
+  id: number
+): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: 'post/owner/' + id,
+    method: 'GET',
+  }) as AxiosPromise<ResponseInterface>;
+};
+
+export const getUserAnswers = (id: number): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/post/reply/' + id,
+    method: 'GET',
+  }) as AxiosPromise<ResponseInterface>;
+};

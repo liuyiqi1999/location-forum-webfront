@@ -36,7 +36,7 @@ onMounted(async () => {
         // 心形
         shape: 'cardioid',
         width: 800,
-        height: 600,
+        height: 500,
         textStyle: {
           normal: {
             color: function () {
@@ -61,12 +61,13 @@ onMounted(async () => {
     ],
   };
   myChart.setOption(option);
+  console.log('词云图');
 });
 </script>
 <style lang="scss" scoped>
 .wordCloud {
   width: 800px;
-  height: 600px;
+  height: 500px;
   //   margin-top: 5px;
 }
 </style>

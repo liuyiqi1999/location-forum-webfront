@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useStore } from 'vuex';
+import { myStore } from '@/store/index';
+import { useMessage } from 'naive-ui';
 
 // 路由信息
 const routes = [
@@ -41,13 +42,18 @@ const routes = [
   },
   {
     path: '/',
-    name: 'index',
-    component: () => import('@/components/HelloWorld.vue'),
+    name: 'Search',
+    component: () => import('@/views/search/index.vue'),
   },
   {
     path: '/admin',
     name: 'Admin',
     component: () => import('@/views/admin/index.vue'),
+  },
+  {
+    path: '/hot',
+    name: 'Rank',
+    component: () => import('@/views/rank/index.vue'),
   },
 ];
 
@@ -64,10 +70,17 @@ router.beforeEach((to, from, next) => {
   // from :指从哪里跳过来的信息
   // next() must be called to resolve the hook}
   // 中间:继续执行的方法
-
+  const store = myStore();
   /** 判断是否登录 */
-  if (!to.meta.requireAuth || localStorage.getItem('token') != '') {
-    next();
+  if (!to.meta.requireAuth || store.getters.Username != '') {
+    // 如果要登录管理员界面，必须有管理员资格
+    if (to.name != 'Admin' || store.getters.getUserRole == 0) {
+      next();
+    } else {
+      next({
+        name: 'Search',
+      });
+    }
   } else {
     // 如果没有登录，就跳到登录页面
     next({
