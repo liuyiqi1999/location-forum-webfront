@@ -20,7 +20,7 @@
             位置：{{ answer.address }}
           </div>
         </template>
-        <div v-if="!answer.isDeleted" v-html="answer.content"></div>
+        <div v-if="answer.isDeleted <= 1" v-html="answer.content"></div>
         <n-empty v-else description="该回答因违反论坛规范而被删除"></n-empty>
 
         <template #footer>
@@ -100,7 +100,7 @@
                 </template>
 
                 <n-empty
-                  v-if="comment.isDeleted"
+                  v-if="comment.isDeleted === 2"
                   description="该评论因违反论坛规范而被删除"
                 ></n-empty>
                 <div v-else v-html="comment.content"></div>
