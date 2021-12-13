@@ -2,13 +2,20 @@
   <div style="padding-top: 20px">
     <!-- box-shadow: 2px 2px 8px rgb(206, 202, 202) -->
     <n-grid>
-      <n-gi offset="2" span="14">
+      <n-gi offset="2" span="12">
         <img
           class="icon"
           @click="goSearch"
           width="170"
           src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
         />
+      </n-gi>
+      <n-gi span="2">
+        <div>
+          <n-space :size="24" align="center">
+            <n-button size="medium" round @click="goRandomPost()">随便看看</n-button>
+          </n-space>
+        </div>
       </n-gi>
       <n-gi span="2" v-if="isLogin">
         <div>
@@ -86,6 +93,7 @@ import {
 } from '@vicons/ionicons5';
 import { useStore } from 'vuex';
 import { NoticeApi, UserApi } from '@/api';
+import { getRandomPostId } from '@/api/post';
 
 // 新消息的数量
 const messageNum = ref(0);
@@ -207,6 +215,15 @@ const goMessage = () => {
     name: 'Message',
   });
 };
+const goRandomPost = async () => {
+  const {data} = await getRandomPostId();
+  if(data.code === 200){
+    const id = data.data.id;
+    router.push({path: `/post/${id}`});
+  } else {
+    message.error(`跳转失败：${data.message}`);
+  }
+}
 //清除计时器
 onUnmounted(() => {
   clearInterval(timer);

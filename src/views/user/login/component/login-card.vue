@@ -90,6 +90,7 @@ const goHomePage = () => {
       ref="loginFormRef"
       :rules="rules"
       label-placement="left"
+      :label-width="80"
     >
       <n-form-item path="username" label="用户名">
         <n-input
