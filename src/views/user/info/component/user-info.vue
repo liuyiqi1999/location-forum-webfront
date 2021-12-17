@@ -8,7 +8,7 @@
           style="
             color: rgb(161, 157, 157);
             padding-left: 25px;
-            margin-bottom: -10px;
+            margin-bottom: -2px;
           "
         >
           个人主页
@@ -28,25 +28,27 @@
         <div class="user-info">
           <div class="info-item">
             <!-- color="#6A5ACD" -->
-            <n-icon size="30" class="user-info-icon">
+            <!-- <n-icon size="30" class="user-info-icon">
               <user-icon></user-icon>
-            </n-icon>
-            <span class="user-info-text"> 用户名： {{ user.username }} </span>
+            </n-icon> -->
+            <span class="user-info-text">
+              🎄 用户名： {{ user.username }}
+            </span>
           </div>
           <div class="info-item">
             <!-- color="#2E8B57" -->
-            <n-icon size="30" class="user-info-icon">
+            <!-- <n-icon size="30" class="user-info-icon">
               <mail-icon></mail-icon>
-            </n-icon>
-            <span class="user-info-text"> 邮箱：{{ user.mail }} </span>
+            </n-icon> -->
+            <span class="user-info-text"> 📧 邮箱：{{ user.mail }} </span>
           </div>
           <div class="info-item">
             <!-- color="#8B4513" -->
-            <n-icon size="30" class="user-info-icon">
+            <!-- <n-icon size="30" class="user-info-icon">
               <signature-icon />
-            </n-icon>
+            </n-icon> -->
             <span class="user-info-text">
-              签名：{{
+              🎨 签名：{{
                 user.signature ? user.signature : '该用户很懒，啥都没写'
               }}
             </span>
@@ -154,13 +156,15 @@ const updateUserInfo = async () => {
 
 <style lang="scss" scoped>
 .user-info-text {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
   margin-left: 10px;
   vertical-align: middle;
+  font-size: 20px;
   // color: #a6a6a6;
 }
 .info-item {
-  margin-top: 35px;
+  margin-top: 20px;
+  color: grey;
 }
 .user-info-icon {
   vertical-align: middle;

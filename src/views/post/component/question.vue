@@ -26,6 +26,7 @@
           <n-button size="small" ghost @click="showAnswerModal = true">
             ✏️ 回答
           </n-button>
+
           <n-dropdown
             trigger="hover"
             @select="handleSelect"
@@ -169,6 +170,7 @@ onMounted(async () => {
 
 const handleSelect = async () => {
   await PostApi.reportQuestion(question.value.id);
+  message.success('感谢您的反馈');
   console.log(111);
 };
 const questionOptions = [

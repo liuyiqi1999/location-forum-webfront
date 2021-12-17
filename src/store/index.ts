@@ -1,6 +1,6 @@
 import { createStore } from 'vuex';
 
-export default createStore({
+const store = createStore({
   state: {
     // 这种写法有问题，如果sessionStorage.getItem(`userInfo`)==''时，无法解析成json，会报错
     // userInfo: JSON.parse(sessionStorage.getItem(`userInfo`) as string) || {},
@@ -32,10 +32,16 @@ export default createStore({
       return state.userInfo?.id ?? '';
     },
     getUserRole(state) {
-      return state.userInfo?.role ?? '';
+      return state.userInfo?.role ?? 1;
     },
     getUserInfo(state) {
       return state.userInfo;
     },
   },
 });
+
+//将store store 导出去,便于在路由守卫中使用
+export function myStore() {
+  return store;
+}
+export default store;

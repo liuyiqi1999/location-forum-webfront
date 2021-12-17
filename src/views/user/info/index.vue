@@ -5,15 +5,21 @@ import UserActivity from './component/user-activity.vue';
 
 <template>
   <div class="container">
-    <user-info></user-info>
+    <user-info class="box"></user-info>
     <user-activity></user-activity>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .container {
-  margin: 0 auto;
+  margin: auto;
+  height: auto !important;
+  background-color: rgb(246, 246, 246);
+  padding-top: 1px;
+}
+.box {
+  margin: 20px auto;
   width: 80%;
-  height: 100%;
+  background-color: white;
 }
 </style>

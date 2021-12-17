@@ -1,11 +1,10 @@
 <template>
   <div style="padding-top: 20px">
-    <!-- box-shadow: 2px 2px 8px rgb(206, 202, 202) -->
     <n-grid>
       <n-gi offset="2" span="12">
         <img
           class="icon"
-          @click="goSearch"
+          @click="goToName('Search')"
           width="170"
           src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
         />
@@ -17,29 +16,43 @@
           </n-space>
         </div>
       </n-gi>
-      <n-gi span="2" v-if="isLogin">
-        <div>
-          <n-space :size="24" align="center">
-            <n-icon size="30" color="#A6A6A6">
-              <search-icon></search-icon>
-            </n-icon>
-          </n-space>
-        </div>
-      </n-gi>
-      <n-gi span="2" v-if="isLogin">
-        <div @click="goMessage">
-          <n-space :size="24" align="center">
-            <n-badge :value="messageNum" :max="100" type="success">
-              <n-icon size="30" color="#A6A6A6">
-                <message-icon></message-icon>
-              </n-icon>
-            </n-badge>
-          </n-space>
-        </div>
-      </n-gi>
-      <n-gi span="2" v-if="isLogin">
-        <div>
-          <n-space style="margin-top: -12px">
+      <n-gi span="6">
+        <n-space justify="space-around">
+          <!-- 热榜 -->
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button text @click="goToName('Rank')">
+                <n-icon size="30"> <hot-icon></hot-icon> </n-icon
+              ></n-button>
+            </template>
+            <span>热榜</span>
+          </n-popover>
+
+          <!-- 搜索 -->
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button text @click="goToName('Search')">
+                <n-icon size="30"> <search-icon></search-icon> </n-icon
+              ></n-button>
+            </template>
+            <span>搜索</span>
+          </n-popover>
+
+          <!-- 通知页面 -->
+          <n-popover trigger="hover">
+            <template #trigger>
+              <n-button v-if="isLogin" text @click="goToName('Message')">
+                <n-badge :value="messageNum" :max="100" color="green">
+                  <n-icon size="30" color="grey">
+                    <message-icon></message-icon>
+                  </n-icon> </n-badge
+              ></n-button>
+            </template>
+            <span>通知</span>
+          </n-popover>
+
+          <!-- 个人中心下拉列表 -->
+          <n-button v-if="isLogin" text>
             <n-dropdown
               @select="handleSelect"
               trigger="hover"
@@ -51,15 +64,18 @@
                 src="https://gitee.com/zqh1024/typora_img/raw/master/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20211030182351.jpg"
               />
             </n-dropdown>
-          </n-space>
-        </div>
-      </n-gi>
-      <n-gi v-if="!isLogin" offset="4">
-        <div style="margin-top: 10px">
-          <n-button size="large" type="success" ghost @click="goLogin"
+          </n-button>
+
+          <!-- 登录按钮 -->
+          <n-button
+            v-if="!isLogin"
+            size="large"
+            type="success"
+            ghost
+            @click="goLogin"
             >登录</n-button
           >
-        </div>
+        </n-space>
       </n-gi>
     </n-grid>
 
@@ -90,6 +106,7 @@ import {
   Pencil as EditIcon,
   LogOutOutline as LogoutIcon,
   SearchSharp as SearchIcon,
+  Aperture as HotIcon,
 } from '@vicons/ionicons5';
 import { useStore } from 'vuex';
 import { NoticeApi, UserApi } from '@/api';
@@ -159,9 +176,9 @@ const updateMessageNum = async (id: number) => {
       message.info(`您已收到 ${num - messageNum.value} 个新消息`);
       messageNum.value = num;
     }
-    timer = setInterval(() => {
-      setTimeout(updateMessageNum, 1000, id);
-    }, 60 * 1000);
+    // timer = setInterval(() => {
+    //   setTimeout(updateMessageNum, 60 * 1000, id);
+    // }, 60 * 1000);
     // await updateMessageNum(id);
   }
 };
@@ -179,7 +196,7 @@ const handleSelect = (key: any) => {
     } else {
       // todo：后面更新到管理员界面
       router.push({
-        name: 'UserInfo',
+        name: 'Admin',
       });
     }
   } else {
@@ -205,16 +222,12 @@ const goLogin = () => {
     name: 'Login',
   });
 };
-const goSearch = () => {
+const goToName = (name: string) => {
   router.push({
-    name: 'Search',
+    name: name,
   });
 };
-const goMessage = () => {
-  router.push({
-    name: 'Message',
-  });
-};
+
 const goRandomPost = async () => {
   const {data} = await getRandomPostId();
   if(data.code === 200){
@@ -224,6 +237,7 @@ const goRandomPost = async () => {
     message.error(`跳转失败：${data.message}`);
   }
 }
+
 //清除计时器
 onUnmounted(() => {
   clearInterval(timer);

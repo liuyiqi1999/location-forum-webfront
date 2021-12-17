@@ -34,6 +34,8 @@ import {
   NLayoutSider,
   NBadge,
   NSkeleton,
+  NPopover,
+  NPopconfirm,
 } from 'naive-ui';
 const naive = create({
   components: [
@@ -65,6 +67,8 @@ const naive = create({
     NLayoutSider,
     NBadge,
     NSkeleton,
+    NPopover,
+    NPopconfirm,
   ],
 });
 const app = createApp(App);
