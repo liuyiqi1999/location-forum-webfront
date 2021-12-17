@@ -122,6 +122,13 @@ export const getFrequentlyUsedTags = (): AxiosPromise<ResponseInterface> => {
   }) as AxiosPromise<ResponseInterface>;
 };
 
+export const getRandomPostId = (): AxiosPromise<ResponseInterface> => {
+  return axios.request({
+    url: '/post/random',
+    method: 'GET',
+  }) as AxiosPromise<ResponseInterface>;
+};
+
 export const getUserQuestions = (
   id: number
 ): AxiosPromise<ResponseInterface> => {

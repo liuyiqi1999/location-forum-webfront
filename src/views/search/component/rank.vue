@@ -6,50 +6,38 @@
         <down-icon v-else></down-icon>
       </n-icon>
     </template>
-    <n-thing v-for="(result, resultIndex) in rank.prop" :key="resultIndex">
+    <n-empty v-if="rank.prop?.length===0" description="暂无帖子"></n-empty>
+    <n-thing v-else v-for="(result, resultIndex) in rank.prop" :key="resultIndex">
       <div v-if="isShow[rankIndex] || resultIndex < 3">
         <n-space justify="space-between">
           <span class="title">
-            <n-button
+            <span
               v-if="resultIndex === 0"
-              size="tiny"
-              circle
-              disabled
-              color="#FFD700"
-              #icon
-              >🥇</n-button
+              >🥇</span
             >
-            <n-button
+            <span
               v-else-if="resultIndex === 1"
-              size="tiny"
-              circle
-              disabled
-              color="#C0C0C0"
-              #icon
-              >🥈</n-button
+              >🥈</span
             >
-            <n-button
+            <span
               v-else-if="resultIndex === 2"
-              size="tiny"
-              circle
-              disabled
-              color="#CD853F"
-              #icon
-              >🥉</n-button
+              >🥉</span
             >
             {{ result.title }}</span
           >
           <span class="sub">浏览量：{{ result.viewTime }}</span>
         </n-space>
-        <n-tag
-          v-for="tag in result.tags"
-          :key="tag"
-          size="small"
-          round
-          type="success"
-        >
-          {{ tag.name }}
-        </n-tag>
+        <n-space>
+          <n-tag
+            v-for="tag in result.tags"
+            :key="tag"
+            size="small"
+            round
+            type="success"
+          >
+            {{ tag.name }}
+          </n-tag>
+        </n-space>
         <n-divider v-if="resultIndex !== rank.prop.length - 1" />
       </div>
     </n-thing>

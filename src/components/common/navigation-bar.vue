@@ -9,7 +9,14 @@
           src="https://gitee.com/zqh1024/typora_img/raw/master/bg1.png"
         />
       </n-gi>
-      <n-gi span="8">
+      <n-gi span="2">
+        <div>
+          <n-space :size="24" align="center">
+            <n-button size="medium" round @click="goRandomPost()">随便看看</n-button>
+          </n-space>
+        </div>
+      </n-gi>
+      <n-gi span="6">
         <n-space justify="space-around">
           <!-- 热榜 -->
           <n-popover trigger="hover">
@@ -103,6 +110,7 @@ import {
 } from '@vicons/ionicons5';
 import { useStore } from 'vuex';
 import { NoticeApi, UserApi } from '@/api';
+import { getRandomPostId } from '@/api/post';
 
 // 新消息的数量
 const messageNum = ref(0);
@@ -219,6 +227,16 @@ const goToName = (name: string) => {
     name: name,
   });
 };
+
+const goRandomPost = async () => {
+  const {data} = await getRandomPostId();
+  if(data.code === 200){
+    const id = data.data.id;
+    router.push({path: `/post/${id}`});
+  } else {
+    message.error(`跳转失败：${data.message}`);
+  }
+}
 
 //清除计时器
 onUnmounted(() => {
