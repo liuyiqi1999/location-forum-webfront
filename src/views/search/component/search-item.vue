@@ -24,7 +24,7 @@
           <n-input v-model:value="keyword_for_tag" />
           <n-button type="primary" @click="getTags()">搜索tag</n-button>
         </n-input-group>
-        <n-button type="primary" class="tag-auto">热门tag</n-button>
+        <n-button type="primary" class="tag-auto" @click="getHotTags()">热门tag</n-button>
         <div class="tag-candidates">
           <n-space>
             <n-tag
@@ -64,6 +64,7 @@ import {
 import { ref } from 'vue';
 import BaiduMap from './baidu-map.vue';
 import { SearchApi } from '@/api';
+import { PostApi } from '@/api';
 
 const KEYWORD = 0;
 const TAGS = 1;
@@ -104,6 +105,11 @@ const getTags = async () => {
   const res = await SearchApi.getTags(keyword_for_tag.value);
   tag_candidates.value = res.data.data;
 };
+
+const getHotTags = async () =>{
+  const res = await PostApi.getFrequentlyUsedTags();
+  tag_candidates.value = res.data.data;
+}
 
 const search = async (type: number) => {
   currentSearchingInfo.value.type = type;

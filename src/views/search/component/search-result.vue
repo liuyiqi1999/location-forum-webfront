@@ -1,11 +1,15 @@
 <template>
   <div>
-    <n-empty description="无搜索结果" v-if="search_res.result.length==0" style="margin-top:20px">
+    <n-empty
+      description="无搜索结果"
+      v-if="search_res.result.length == 0"
+      style="margin-top: 20px"
+    >
     </n-empty>
     <n-list>
       <n-list-item v-for="(result, index) in search_res.result" :key="index">
         <div class="question-whole">
-          <div class="question-title">
+          <div class="question-title" @click="goDetail(result.id)">
             {{ result.title }}
           </div>
           <div class="question-location">
@@ -68,10 +72,18 @@
 import { inject, ref } from 'vue';
 import { NCard, NTag, NList, NListItem, NPagination } from 'naive-ui';
 import { SearchApi } from '@/api';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const search_res = inject('search_res') as any;
 const search_info = inject('search_info') as any;
 const pageNum = ref(1);
+
+const goDetail = (id:number) => {
+  router.push({
+    path: `/post/${id}`,
+  });
+};
 
 const getAnotherPage = async (page: number) => {
   console.log(page);
@@ -132,6 +144,11 @@ const getAnotherPage = async (page: number) => {
   text-overflow: ellipsis;
   overflow: hidden;
   word-break: break-all;
+}
+
+.question-title:hover{
+  color: rgb(30, 122, 27);
+  cursor: pointer;
 }
 .question-author {
   max-width: 20%;

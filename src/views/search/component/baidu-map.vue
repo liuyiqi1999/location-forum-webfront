@@ -5,6 +5,12 @@
 <script lang="ts">
 import { defineComponent, ref, unref, onMounted } from 'vue';
 import { GetLocationApi } from '@/api';
+import { NIcon} from 'naive-ui';
+import {
+  Location as LocationIcon,
+  Create as StartIcon,
+  CreateOutline as CloseIcon
+} from '@vicons/ionicons5';
 
 export default defineComponent({
   name: 'BaiduMap',
@@ -16,7 +22,7 @@ export default defineComponent({
     height: {
       type: String,
       // default: 'calc(100vh - 478px)',
-      default: '500px'
+      default: '500px',
     },
   },
   setup(props, context) {
@@ -24,6 +30,7 @@ export default defineComponent({
     const _drawing = ref<boolean>(false);
     const _overlay = ref<any>(null);
     var drawingManager: any;
+    var located = false;
     const _dmDiv = ref<any>(null);
     const _selected_field = ref<any>(null);
     context.emit('selected-field', null);
@@ -60,12 +67,12 @@ export default defineComponent({
         'circlecomplete',
         (e: any, overlay: any) => {
           _overlay.value = overlay;
-          _dmDiv.value.innerHTML = '重新绘制';
+          _dmDiv.value.innerHTML = '绘制';
           _drawing.value = false;
           drawingManager.close();
           var myGeo = new BMap.Geocoder({ extensions_town: true });
           // 根据坐标得到地址描述
-          myGeo.getLocation(_overlay.value.getCenter(), function (result:any) {
+          myGeo.getLocation(_overlay.value.getCenter(), function (result: any) {
             if (result) {
               console.log(result);
             }
@@ -85,10 +92,11 @@ export default defineComponent({
       DrawingControl.prototype = new BMap.Control();
       DrawingControl.prototype.initialize = function (map: any) {
         _dmDiv.value = document.createElement('div');
-        _dmDiv.value.appendChild(document.createTextNode('重新绘制'));
+        _dmDiv.value.appendChild(document.createTextNode('绘制'));
         _dmDiv.value.style.cursor = 'pointer';
-        _dmDiv.value.style.border = '1px solid gray';
         _dmDiv.value.style.backgroundColor = 'white';
+        _dmDiv.value.style.padding = '5px';
+        _dmDiv.value.style.borderRadius = "5px";
         _dmDiv.value.onclick = function (e: any) {
           if (!_drawing.value) {
             if (_overlay.value) _overlay.value.hide();
@@ -97,7 +105,7 @@ export default defineComponent({
             drawingManager.open();
             _drawing.value = true;
           } else {
-            _dmDiv.value.innerHTML = '重新绘制';
+            _dmDiv.value.innerHTML = '绘制';
             _drawing.value = false;
             context.emit('selected-field', null);
             drawingManager.close();
@@ -118,12 +126,20 @@ export default defineComponent({
         var div = document.createElement('div');
         div.appendChild(document.createTextNode('定位'));
         div.style.cursor = 'pointer';
-        div.style.border = '1px solid gray';
         div.style.backgroundColor = 'white';
+        div.style.padding = '5px';
+        div.style.borderRadius = "5px";
         div.onclick = function (e: any) {
-          GetLocationApi.getLocationFromBrowser((r:any)=>
-          {
-            console.log(r);
+          GetLocationApi.getLocationFromBrowser((r: any) => {
+            if (located) {
+              map.panTo(r.point);
+            } else {
+              var mk = new BMap.Marker(r.point);
+              map.addOverlay(mk);
+              map.panTo(r.point);
+              console.log(r);
+              located = true;
+            }
           });
         };
         map.getContainer().appendChild(div);

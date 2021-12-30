@@ -75,6 +75,7 @@ router.beforeEach((to, from, next) => {
   if (!to.meta.requireAuth || store.getters.Username != '') {
     // 如果要登录管理员界面，必须有管理员资格
     if (to.name != 'Admin' || store.getters.getUserRole == 0) {
+      console.log(store.getters.getUserInfo)
       next();
     } else {
       next({
