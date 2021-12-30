@@ -10,13 +10,20 @@ import {
 } from 'naive-ui';
 import { ReportSolutionApi } from '@/api';
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const res = ref<Array<any>>();
 const currentPage = ref<number>(1);
 const totalPage = ref<number>(0);
 const currentResType = ref<number>(0);
 const store = useStore();
 
+const goDetail = (id:number) => {
+  router.push({
+    path: `/post/${id}`,
+  });
+};
 const solveReport = async (operation: number, id: number) => {
   const userId = store.getters.getUserId;
   var solutionResult = await ReportSolutionApi.solveReport(
@@ -109,7 +116,8 @@ onMounted(async () => {
 
             <td>
               <n-space>
-                <n-button type="default">查看</n-button>
+                <n-button type="default" v-if="currentResType == 0" @click="goDetail(target.id)">查看</n-button>
+                <n-button type="default" v-if="currentResType != 0" @click="goDetail(target.postId)">查看</n-button>
                 <n-button type="success" @click="solveReport(1, target.id)"
                   >保留</n-button
                 >
